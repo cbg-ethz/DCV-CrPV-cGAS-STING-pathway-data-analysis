@@ -1,0 +1,57 @@
+import subprocess
+from pathlib import Path
+
+def main(
+    fname_bam,
+    fname_reference,
+    fname_insert_bed,
+    window_size,
+    fname_snv_vcf,
+    fname_snv_csv,
+    fname_csv,
+    dname_work):
+
+    alpha = 0.0001
+    n_max_haplotypes = 100
+    window_size = 50
+
+    dname_work.mkdir(parents=True, exist_ok=True)
+
+    subprocess.run(
+        [
+            "viloca",
+            "run",
+            "-b",
+            fname_bam.resolve(),
+            "-f",
+            fname_reference.resolve(),
+            "--mode",
+            "use_quality_scores",
+            "--alpha",
+            str(alpha),
+            "--n_max_haplotypes",
+            str(n_max_haplotypes),
+            "-w",
+            str(window_size),
+            "--min_windows_coverage",
+            "2",
+            "--NO-strand_bias_filter",
+        ],
+        cwd=dname_work,
+    )
+
+    (dname_work / "snv" / "SNVs_0.010000_final.vcf").rename(fname_snv_vcf)
+    (dname_work / "snv" / "SNVs_0.010000_final.csv").rename(fname_snv_csv)
+    (dname_work / "snv" / "cooccurring_mutations.csv").rename(fname_csv)
+
+
+if __name__ == "__main__":
+    main(
+        Path(snakemake.input.fname_bam),
+        Path(snakemake.input.fname_reference),
+        Path(snakemake.input.fname_insert_bed),
+        Path(snakemake.output.fname_snv_vcf),
+        Path(snakemake.output.fname_snv_csv),
+        Path(snakemake.output.fname_csv),
+        Path(snakemake.output.dname_work),
+    )

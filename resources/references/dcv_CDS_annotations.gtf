@@ -1,0 +1,9 @@
+#gtf-version 2.2
+#!genome-build ViralProj14682
+#!genome-build-accession NCBI_Assembly:GCA_000850085.1
+AF014388.1	Genbank	CDS	799	6075	.	+	0	gene_id "unassigned_gene_1"; transcript_id "unassigned_transcript_1"; gbkey "CDS"; note "includes putative protease, helicase and RdRp domains; putative; ORF-1"; product "replicase polyprotein"; protein_id "AAC58807.1"; exon_number "1";
+AF014388.1	Genbank	start_codon	799	801	.	+	0	gene_id "unassigned_gene_1"; transcript_id "unassigned_transcript_1"; gbkey "CDS"; note "includes putative protease, helicase and RdRp domains; putative; ORF-1"; product "replicase polyprotein"; protein_id "AAC58807.1"; exon_number "1";
+AF014388.1	Genbank	stop_codon	6076	6078	.	+	0	gene_id "unassigned_gene_1"; transcript_id "unassigned_transcript_1"; gbkey "CDS"; note "includes putative protease, helicase and RdRp domains; putative; ORF-1"; product "replicase polyprotein"; protein_id "AAC58807.1"; exon_number "1";
+AF014388.1	Genbank	CDS	6267	8969	.	+	0	gene_id "unassigned_gene_2"; transcript_id "unassigned_transcript_2"; gbkey "CDS"; note "ORF-2; putative; translation start site unknown"; partial "true"; product "capsid polyprotein"; protein_id "AAC58808.1"; exon_number "1";
+AF014388.1	Genbank	stop_codon	8970	8972	.	+	0	gene_id "unassigned_gene_2"; transcript_id "unassigned_transcript_2"; gbkey "CDS"; note "ORF-2; putative; translation start site unknown"; partial "true"; product "capsid polyprotein"; protein_id "AAC58808.1"; exon_number "1";
+###

@@ -1,0 +1,133 @@
+from snakemake.utils import Paramspace
+import yaml
+
+def load_config(path):
+    with open(path, 'r') as stream:
+        config = yaml.safe_load(stream)
+    return config
+
+import pandas as pd
+
+from snakemake.utils import min_version
+min_version("7.32.1") # in this version the nested module naming was fixed
+
+#config = load_config("config/config.yaml")
+configfile: "config/config.yaml"
+
+# setup paramspace
+df_samples = pd.read_csv(config["vpipe"]['input']['samples_file'], comment="#", sep="\t")
+
+module vpipe:
+    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
+    config: config["vpipe"]
+use rule * from vpipe as vpipe_*
+
+rule all:
+    input:
+        rules.vpipe_all.input,
+        #f"results/coverage_all.csv",
+        #f"results/coverage_distribution_1000coverage.pdf",
+        #f"results/all_mutations.csv",
+        f"results/all_mutations.annotated.csv",
+        #f"results/all_consensus.fasta",
+        f"results/snpgenie_codon_results.csv",
+        f"results/snpgenie_population_summary.csv",
+        f"results/snpgenie_product_results.csv",
+        f"results/snpgenie_site_results.csv",
+    default_target: True
+
+rule collect_consensus_sequences:
+    input:
+        fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=vpipe.datasets),
+    output:
+        fname_merged = "results/all_consensus.fasta",
+    conda:
+        "envs/co-occurring_mutations.yaml"
+    script:
+        "./scripts/collect_consensus_sequences.py"
+
+
+rule run_viloca:
+    input:
+        fname_bam="{dataset}/alignments/REF_aln.bam",
+        fname_reference=config['vpipe']['input']['reference'],
+    output:
+        fname_snv_vcf="{dataset}/variants/SNVs/snvs.vcf",
+        fname_snv_csv="{dataset}/variants/SNVs/snvs.csv",
+        fname_csv="{dataset}/variants/SNVs/cooccurring_mutations.csv",
+        dname_work=directory(
+            "{dataset}/variants/SNVs/"
+            ),
+    conda:
+        "envs/viloca.yaml"
+    resources:
+        mem_mb=60000,
+        runtime=14400,
+    threads: 20
+    script:
+        "scripts/run_viloca.py"
+
+
+rule annotate_vcf:
+    input:
+        fname_snvs_vcf=rules.run_viloca.output.fname_snv_vcf,
+        fname_genbank_file="resources/references/dcv_eb_annotations.gbff",
+    output:
+        fname_snvs_vcf="{dataset}/snvs.annotated.vcf",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "./scripts/annotate_vcf.py"
+
+rule collect_annotated_mutations:
+    input:
+        fnames_snv_csv=expand("{dataset}/snvs.annotated.vcf", dataset=vpipe.datasets),
+    output:
+        fname_all_mutations="results/all_mutations.annotated.csv",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "./scripts/collect_annotated_mutations.py"
+
+rule collect_all_mutations:
+    input:
+        fnames_snv_csv=expand("{dataset}/variants/SNVs/snvs.csv", dataset=vpipe.datasets),
+    output:
+        fname_all_mutations="results/all_mutations.csv",
+    conda:
+        "envs/aln_stats.yaml"
+    script:
+        "./scripts/collect_mutations.py"
+
+
+rule run_snpgenie:
+    input:
+        fname_snvs_vcf="{dataset}/variants/SNVs/snvs.vcf",
+        fname_reference=config['vpipe']['input']['reference'],
+        fname_gtffile="resources/references/dcv_CDS_annotations.gtf",
+    output:
+        fname_codon="{dataset}/variants/SNPGenie_Results_work/codon_results.txt",
+        fname_population_summary="{dataset}/variants/SNPGenie_Results_work/population_summary.txt",
+        fname_product_results="{dataset}/variants/SNPGenie_Results_work/product_results.txt",
+        fname_site_results="{dataset}/variants/SNPGenie_Results_work/site_results.txt",
+        dname_work=directory("{dataset}/variants/SNPGenie_Results_work/"),
+    conda:
+        "envs/snpgenie.yaml"
+    script:
+        "./scripts/run_snpgenie.py"
+
+rule collect_snpgenie:
+    input:
+        fname_codon=expand("{dataset}/variants/SNPGenie_Results_work/codon_results.txt", dataset=vpipe.datasets),
+        fname_population_summary=expand("{dataset}/variants/SNPGenie_Results_work/population_summary.txt", dataset=vpipe.datasets),
+        fname_product_results=expand("{dataset}/variants/SNPGenie_Results_work/product_results.txt", dataset=vpipe.datasets),
+        fname_site_results=expand("{dataset}/variants/SNPGenie_Results_work/site_results.txt", dataset=vpipe.datasets),
+    output:
+        fname_codon=f"results/snpgenie_codon_results.csv",
+        fname_population_summary=f"results/snpgenie_population_summary.csv",
+        fname_product_results=f"results/snpgenie_product_results.csv",
+        fname_site_results=f"results/snpgenie_site_results.csv",
+    conda:
+        "envs/snpgenie.yaml"
+    script:
+        "./scripts/collect_snpgenie_results.py"
