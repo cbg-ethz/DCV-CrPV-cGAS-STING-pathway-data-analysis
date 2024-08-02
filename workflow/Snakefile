@@ -8,9 +8,6 @@ def load_config(path):
 
 import pandas as pd
 
-from snakemake.utils import min_version
-min_version("7.32.1") # in this version the nested module naming was fixed
-
 #config = load_config("config/config.yaml")
 configfile: "config/config.yaml"
 
