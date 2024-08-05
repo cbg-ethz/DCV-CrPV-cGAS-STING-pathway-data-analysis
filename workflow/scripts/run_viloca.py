@@ -3,13 +3,28 @@ from pathlib import Path
 
 def main(
     fname_bam,
-    fname_reference,
+    fname_reference_dcv,
+    fname_reference_crpv,
+    fname_reference_p0_dcv,
+    fname_reference__p0_crpv,
     fname_insert_bed,
     window_size,
     fname_snv_vcf,
     fname_snv_csv,
     fname_csv,
     dname_work):
+
+    # get the correct reference
+    if "parental" in str(fname_bam):
+        if "dcv" in str(fname_bam):
+            fname_reference = fname_reference_dcv.resolve()
+        elif "crpv" in str(fname_bam):
+            fname_reference = fname_reference_crpv.resolve()
+    else:
+        if "dcv" in str(fname_bam):
+            fname_reference = fname_reference_p0_dcv.resolve()
+        elif "crpv" in str(fname_bam):
+            fname_reference = fname_reference__p0_crpv.resolve()
 
     alpha = 0.0001
     n_max_haplotypes = 100
@@ -24,7 +39,7 @@ def main(
             "-b",
             fname_bam.resolve(),
             "-f",
-            fname_reference.resolve(),
+            fname_reference,
             "--mode",
             "use_quality_scores",
             "--alpha",
@@ -48,7 +63,10 @@ def main(
 if __name__ == "__main__":
     main(
         Path(snakemake.input.fname_bam),
-        Path(snakemake.input.fname_reference),
+        Path(fname_reference_dcv),
+        Path(fname_reference_crpv),
+        Path(fname_reference_p0_dcv),
+        Path(fname_reference__p0_crpv),
         Path(snakemake.input.fname_insert_bed),
         Path(snakemake.output.fname_snv_vcf),
         Path(snakemake.output.fname_snv_csv),

@@ -1,4 +1,8 @@
-vpipe:
+viloca:
+  parental_dcv: /cluster/work/bewi/members/lfuhrmann/DCV-CrPV-cGAMP-primed-data-analysis/results/dcv/parental_p0/references/ref_majority.fasta
+  parental_crpv: /cluster/work/bewi/members/lfuhrmann/DCV-CrPV-cGAMP-primed-data-analysis/results/crpv/parental_p0/references/ref_majority.fasta
+
+vpipe_dcv:
   general:
       aligner: "bwa"
 
@@ -6,7 +10,31 @@ vpipe:
       reference: resources/references/dcv_eb.fasta
       datadir: resources/samples
       read_length: 42
-      samples_file: config/samples.tsv
+      samples_file: config/samples_dcv.tsv
+      paired: true
+
+  consensus_bcftools:
+      max_coverage: 150000
+
+  output:
+      datadir: results/results_vpipe
+
+      snv: false
+      local: false
+      global: false
+      visualization: false
+      diversity: false
+      QA: false
+
+vpipe_crpv:
+  general:
+      aligner: "bwa"
+
+  input:
+      reference: resources/references/crpv.fasta
+      datadir: resources/samples
+      read_length: 42
+      samples_file: config/samples_crpv.tsv
       paired: true
 
   consensus_bcftools:
