@@ -11,9 +11,6 @@ import pandas as pd
 #config = load_config("config/config.yaml")
 configfile: "config/config.yaml"
 
-# setup paramspace
-df_samples = pd.read_csv(config["vpipe"]['input']['samples_file'], comment="#", sep="\t")
-
 module vpipe_dcv:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_dcv"]
