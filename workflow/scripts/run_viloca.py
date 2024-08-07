@@ -63,10 +63,10 @@ def main(
 if __name__ == "__main__":
     main(
         Path(snakemake.input.fname_bam),
-        Path(fname_reference_dcv),
-        Path(fname_reference_crpv),
-        Path(fname_reference_p0_dcv),
-        Path(fname_reference__p0_crpv),
+        Path(snakemake.input.fname_reference_dcv),
+        Path(snakemake.input.fname_reference_crpv),
+        Path(snakemake.input.fname_reference_p0_dcv),
+        Path(snakemake.input.fname_reference__p0_crpv),
         Path(snakemake.input.fname_insert_bed),
         Path(snakemake.output.fname_snv_vcf),
         Path(snakemake.output.fname_snv_csv),
