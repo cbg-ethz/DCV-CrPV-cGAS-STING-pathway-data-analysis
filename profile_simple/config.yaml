@@ -2,7 +2,7 @@ cluster:
   mkdir -p logs/{rule} &&
   sbatch
     --parsable
-    --job-name=DWV-analysis-{rule}-{wildcards}
+    --job-name=DCV-CrPV-{rule}-{wildcards}
     --cpus-per-task={threads}
     --mem-per-cpu="$(( {resources.mem_mb} / {threads} ))"
     --time="{resources.runtime}"
