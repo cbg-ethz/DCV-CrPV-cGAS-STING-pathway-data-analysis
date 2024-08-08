@@ -7,7 +7,6 @@ def main(
     fname_reference_crpv,
     fname_reference_p0_dcv,
     fname_reference__p0_crpv,
-    window_size,
     fname_snv_vcf,
     fname_snv_csv,
     fname_csv,
@@ -27,7 +26,7 @@ def main(
 
     alpha = 0.0001
     n_max_haplotypes = 100
-    window_size = 50
+    window_size = 55
 
     dname_work.mkdir(parents=True, exist_ok=True)
 
