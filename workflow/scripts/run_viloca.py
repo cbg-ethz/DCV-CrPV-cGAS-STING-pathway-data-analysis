@@ -27,7 +27,7 @@ def main(
 
     alpha = 0.0001
     n_max_haplotypes = 100
-    window_size = 55
+    window_size = 54
 
     dname_work.mkdir(parents=True, exist_ok=True)
 
