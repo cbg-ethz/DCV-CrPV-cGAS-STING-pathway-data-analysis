@@ -19,7 +19,7 @@ def collect_read_len(fnames, fname_out):
         with open(fname, 'r') as file:
             info = yaml.safe_load(file)
             id = fname.split("/")[-4] + "/" + fname.split("/")[-3]
-            tmp.append({
+            tmp.update({
                 "genome": fname.split("/")[-4],
                 "sample": fname.split("/")[-3],
                 "mean_read_len": info[id]['readlen_mean']
