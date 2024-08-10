@@ -1,7 +1,5 @@
 import pandas as pd
 import yaml
-import subprocess
-from pathlib import Path
 
 def collect_coverage(fnames, fname_out):
     tmp =[]
@@ -39,7 +37,7 @@ def main(fnames, fname_out, fname_out_read_len):
 
 if __name__ == "__main__":
     main(
-        Path(snakemake.input.fnames_coverage),
-        Path(snakemake.output.fname_coverage),
-        Path(snakemake.output.fname_read_len),
+        snakemake.input.fnames_coverage,
+        snakemake.output.fname_coverage,
+        snakemake.output.fname_read_len,
     )
