@@ -14,18 +14,23 @@ def collect_coverage(fnames, fname_out):
 
 def collect_read_len(fnames, fname_out):
 
-    tmp ={}
+    genome = []
+    sample = []
+    mean_read_len = []
+
     for fname in fnames:
         with open(fname, 'r') as file:
             info = yaml.safe_load(file)
             id = fname.split("/")[-4] + "/" + fname.split("/")[-3]
-            tmp.update({
-                "genome": fname.split("/")[-4],
-                "sample": fname.split("/")[-3],
-                "mean_read_len": info[id]['readlen_mean']
-            })
+            genome.append(fname.split("/")[-4])
+            sample.append(fname.split("/")[-3])
+            mean_read_len.append(info[id]['readlen_mean'])
 
-    pd.DataFrame(tmp).to_csv(fname_out)
+    pd.DataFrame({
+        "genome": genome,
+        "sample": sample,
+        "mean_read_len": mean_read_len
+    }).to_csv(fname_out)
 
 
 def main(fnames, fname_out, fname_out_read_len):
