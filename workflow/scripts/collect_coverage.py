@@ -5,7 +5,7 @@ def collect_coverage(fnames, fname_out):
     tmp =[]
 
     for fname in fnames:
-        df_tmp =  [pd.read_csv(fname, sep="\t")
+        df_tmp =  pd.read_csv(fname, sep="\t")
         df_tmp['genome'] = fname.split("/")[-4]
         df_tmp['sample'] = fname.split("/")[-3]
         tmp.append(df_tmp)
