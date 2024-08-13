@@ -16,6 +16,11 @@ module vpipe_dcv:
     config: config["vpipe_dcv"]
 use rule * from vpipe_dcv as vpipe_dcv_*
 
+module vpipe_dcv_p0:
+    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
+    config: config["vpipe_dcv_p0"]
+use rule * from vpipe_dcv_p0 as vpipe_dcv_p0_*
+
 #module vpipe_crpv:
 #    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
 #    config: config["vpipe_crpv"]
@@ -36,9 +41,11 @@ rule all:
         #f"results/snpgenie_site_results.csv",
     default_target: True
 
+datasets_dcv = vpipe_dcv.datasets + vpipe_dcv_p0.datasets
+
 rule dcv_collect_consensus_sequences:
     input:
-        fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=vpipe_dcv.datasets),
+        fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=datasets_dcv),
     output:
         fname_merged = "results/dcv_all_consensus.fasta",
     conda:
