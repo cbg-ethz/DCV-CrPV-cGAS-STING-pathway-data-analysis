@@ -1,5 +1,5 @@
 viloca:
-  parental_dcv: resources/references/ref_majority.fasta
+  parental_dcv: resources/references/ref_majority_dcv.fasta
   parental_crpv: resources/references/ref_majority_crpv.fasta
 
 vpipe_dcv:
