@@ -8,7 +8,9 @@ def collect_coverage(fnames, fname_out):
         df_tmp =  pd.read_csv(fname, sep="\t")
         df_tmp['genome'] = fname.split("/")[-4]
         df_tmp['sample'] = fname.split("/")[-3]
-        tmp.append(df_tmp)
+        sample_id = fname.split("/")[-4]+"/"+fname.split("/")[-3]
+        df_tmp['coverage'] = df_tmp[sample_id]
+        tmp.append(df_tmp[['genome', 'sample', 'coverage', 'ref', 'pos']])
 
     pd.concat(tmp).to_csv(fname_out)
 
