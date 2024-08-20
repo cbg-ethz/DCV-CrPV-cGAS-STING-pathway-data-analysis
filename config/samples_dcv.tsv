@@ -32,6 +32,8 @@ dcv	I_p5_a
 dcv	I_p5_b
 dcv	I_p5_c
 dcv	W_p10_b
+dcv	W_p10_a
+#dcv	W_p10_c #demultiplexing problem
 dcv	I_p10_a
 dcv	I_p10_b
 dcv	I_p10_c
