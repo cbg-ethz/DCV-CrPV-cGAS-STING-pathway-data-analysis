@@ -50,6 +50,33 @@ vpipe_dcv_p0:
       diversity: false
       QA: false
 
+
+vpipe_crpv_p0:
+  general:
+      aligner: "bwa"
+
+  input:
+      reference: /cluster/work/bewi/members/lfuhrmann/DCV-CrPV-cGAMP-primed-data-analysis/resources/references/crpv.fasta
+      datadir: resources/samples
+      read_length: 42
+      samples_file: config/samples_crpv_p0.tsv
+      paired: true
+
+  consensus_bcftools:
+      max_coverage: 150000
+
+  output:
+      datadir: results/results_vpipe
+
+      snv: false
+      local: false
+      global: false
+      visualization: false
+      diversity: false
+      QA: false
+
+output_dir: results/
+
 vpipe_crpv:
   general:
       aligner: "bwa"

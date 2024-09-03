@@ -14,12 +14,17 @@ configfile: "config/config.yaml"
 module vpipe_dcv:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_dcv"]
-use rule * from vpipe_dcv exclude consensus_bcftools as vpipe_dcv_*
+use rule * from vpipe_dcv as vpipe_dcv_*
 
 module vpipe_dcv_p0:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_dcv_p0"]
-use rule * from vpipe_dcv_p0 exclude consensus_bcftools as vpipe_dcv_p0_*
+use rule * from vpipe_dcv_p0 as vpipe_dcv_p0_*
+
+module vpipe_crpv_p0:
+    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
+    config: config["vpipe_crpv_p0"]
+use rule * from vpipe_crpv_p0 as vpipe_crpv_p0_*
 
 #module vpipe_crpv:
 #    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
@@ -29,6 +34,7 @@ use rule * from vpipe_dcv_p0 exclude consensus_bcftools as vpipe_dcv_p0_*
 rule all:
     input:
         rules.vpipe_dcv_all.input,
+        rules.vpipe_crpv_p0_all.input,
         "results/coverage.csv",
         #rules.vpipe_crpv_all.input,
         #f"results/all_mutations.csv",
