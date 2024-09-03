@@ -57,7 +57,7 @@ vpipe_crpv_p0:
 
   input:
       reference: /cluster/work/bewi/members/lfuhrmann/DCV-CrPV-cGAMP-primed-data-analysis/resources/references/crpv.fasta
-      datadir: resources/samples
+      datadir: resources/samples/crpv_base
       read_length: 42
       samples_file: config/samples_crpv_p0.tsv
       paired: true
