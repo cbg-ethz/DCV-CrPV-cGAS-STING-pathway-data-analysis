@@ -83,7 +83,7 @@ vpipe_crpv:
 
   input:
       reference: resources/references/ref_majority_crpv.fasta
-      datadir: resources/samples
+      datadir: resources/samples/crpv_base
       read_length: 42
       samples_file: config/samples_crpv.tsv
       paired: true
