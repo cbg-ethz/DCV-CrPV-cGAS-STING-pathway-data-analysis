@@ -26,21 +26,24 @@ module vpipe_crpv_p0:
     config: config["vpipe_crpv_p0"]
 use rule * from vpipe_crpv_p0 as vpipe_crpv_p0_*
 
-#module vpipe_crpv:
-#    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
-#    config: config["vpipe_crpv"]
-#use rule * from vpipe_crpv as vpipe_crpv_*
+module vpipe_crpv:
+    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
+    config: config["vpipe_crpv"]
+use rule * from vpipe_crpv as vpipe_crpv_*
 
 rule all:
     input:
         rules.vpipe_dcv_all.input,
+        rules.vpipe_dcv_p0_all.input,
         rules.vpipe_crpv_p0_all.input,
-        "results/coverage.csv",
-        #rules.vpipe_crpv_all.input,
-        #f"results/all_mutations.csv",
-        f"results/all_mutations.annotated.csv",
+        rules.vpipe_crpv_all.input,
+        "results/coverage_crpv.csv",
+        "results/coverage_dcv.csv",
+        f"results/crpv_all_mutations.csv",
+        f"results/dcv_all_mutations.csv",
+        #f"results/all_mutations.annotated.csv",
         #f"results/crpv_all_consensus.fasta",
-        f"results/dcv_all_consensus.fasta",
+        #f"results/dcv_all_consensus.fasta",
         #f"results/snpgenie_codon_results.csv",
         #f"results/snpgenie_population_summary.csv",
         #f"results/snpgenie_product_results.csv",
@@ -48,8 +51,9 @@ rule all:
     default_target: True
 
 datasets_dcv = vpipe_dcv.datasets + vpipe_dcv_p0.datasets
+datasets_crpv = vpipe_crpv_p0.datasets + vpipe_crpv.datasets
 
-rule dcv_collect_consensus_sequences:
+rule collect_consensus_sequences:
     input:
         fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=datasets_dcv),
     output:
@@ -58,6 +62,12 @@ rule dcv_collect_consensus_sequences:
         "envs/annotate_vcf.yaml"
     script:
         "./scripts/collect_consensus_sequences.py"
+
+use rule collect_consensus_sequences as crpv_collect_consensus_sequences with:
+    input:
+        fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=datasets_crpv),
+    output:
+        fname_merged = "results/crpv_all_consensus.fasta",
 
 
 rule run_viloca:
@@ -109,11 +119,18 @@ rule collect_all_mutations:
     input:
         fnames_snv_csv=expand("{dataset}/variants/SNVs/snvs.csv", dataset=vpipe_dcv.datasets),
     output:
-        fname_all_mutations="results/all_mutations.csv",
+        fname_all_mutations="results/dcv_all_mutations.csv",
     conda:
         "envs/annotate_vcf.yaml"
     script:
         "./scripts/collect_mutations.py"
+
+use rule collect_all_mutations as crpv_collect_all_mutations with:
+    input:
+        fnames_snv_csv=expand("{dataset}/variants/SNVs/snvs.csv", dataset=vpipe_crpv.datasets),
+    output:
+        fname_all_mutations="results/crpv_all_mutations.csv",
+
 
 rule collect_coverage:
     input:
