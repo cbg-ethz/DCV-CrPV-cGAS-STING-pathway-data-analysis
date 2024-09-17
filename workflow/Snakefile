@@ -15,28 +15,32 @@ module vpipe_dcv:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_dcv"]
     replace_prefix:
-        {"results/": "results/dcv/"}
+        {"results/": "results/dcv/",
+         "resources": "resources/dcv/"}
 use rule * from vpipe_dcv as vpipe_dcv_*
 
 module vpipe_dcv_p0:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_dcv_p0"]
     replace_prefix:
-        {"results/": "results/dcv_p0/"}
+        {"results/": "results/dcv_p0/",
+         "resources": "resources/dcv_p0/"}
 use rule * from vpipe_dcv_p0 as vpipe_dcv_p0_*
 
 module vpipe_crpv_p0:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_crpv_p0"]
     replace_prefix:
-        {"results/": "results/crpv_p0/"}
+        {"results/": "results/crpv_p0/",
+         "resources": "resources/crpv_p0/"}
 use rule * from vpipe_crpv_p0 as vpipe_crpv_p0_*
 
 module vpipe_crpv:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_crpv"]
     replace_prefix:
-        {"results/": "results/crpv/"}
+        {"results/": "results/crpv/",
+         "resources": "resources/crpv/"}
 use rule * from vpipe_crpv as vpipe_crpv_*
 
 rule all:
