@@ -16,7 +16,7 @@ module vpipe_dcv:
     config: config["vpipe_dcv"]
     replace_prefix:
         {"results/": "results/dcv/",
-         "resources": "resources/dcv/"}
+         "resources": "resources/samples/dcv_base"}
 use rule * from vpipe_dcv as vpipe_dcv_*
 
 module vpipe_dcv_p0:
@@ -24,7 +24,7 @@ module vpipe_dcv_p0:
     config: config["vpipe_dcv_p0"]
     replace_prefix:
         {"results/": "results/dcv_p0/",
-         "resources": "resources/dcv_p0/"}
+         "resources": "resources/samples/dcv_base"}
 use rule * from vpipe_dcv_p0 as vpipe_dcv_p0_*
 
 module vpipe_crpv_p0:
@@ -32,7 +32,7 @@ module vpipe_crpv_p0:
     config: config["vpipe_crpv_p0"]
     replace_prefix:
         {"results/": "results/crpv_p0/",
-         "resources": "resources/crpv_p0/"}
+         "resources": "resources/samples/crpv_base"}
 use rule * from vpipe_crpv_p0 as vpipe_crpv_p0_*
 
 module vpipe_crpv:
@@ -40,7 +40,7 @@ module vpipe_crpv:
     config: config["vpipe_crpv"]
     replace_prefix:
         {"results/": "results/crpv/",
-         "resources": "resources/crpv/"}
+         "resources": "resources/samples/crpv_base"}
 use rule * from vpipe_crpv as vpipe_crpv_*
 
 rule all:
