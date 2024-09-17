@@ -13,8 +13,7 @@ def main(fnames_snv_csv, fout_all_mutations_csv):
         f_snv_vcf = str(f_snv_vcf)
 
         df_tmp = pd.read_csv(f_snv_vcf)
-        df_tmp["window_size"] = f_snv_vcf.split("/variants_w")[1].split("/")[0]
-        df_tmp["treatment"] = f_snv_vcf.split("/variants")[0].split("/")[-3]
+        df_tmp["virus"] = f_snv_vcf.split("/variants")[0].split("/")[-3]
         df_tmp["rep"] = f_snv_vcf.split("/variants")[0].split("/")[-2]
         df_tmp["passage"] = f_snv_vcf.split("/variants")[0].split("/")[-1]
 

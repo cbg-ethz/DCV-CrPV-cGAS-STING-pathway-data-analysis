@@ -14,21 +14,29 @@ configfile: "config/config.yaml"
 module vpipe_dcv:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_dcv"]
+    replace_prefix:
+        {"results/": "results/dcv/"}
 use rule * from vpipe_dcv as vpipe_dcv_*
 
 module vpipe_dcv_p0:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_dcv_p0"]
+    replace_prefix:
+        {"results/": "results/dcv_p0/"}
 use rule * from vpipe_dcv_p0 as vpipe_dcv_p0_*
 
 module vpipe_crpv_p0:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_crpv_p0"]
+    replace_prefix:
+        {"results/": "results/crpv_p0/"}
 use rule * from vpipe_crpv_p0 as vpipe_crpv_p0_*
 
 module vpipe_crpv:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_crpv"]
+    replace_prefix:
+        {"results/": "results/crpv/"}
 use rule * from vpipe_crpv as vpipe_crpv_*
 
 rule all:
@@ -37,10 +45,10 @@ rule all:
         rules.vpipe_dcv_p0_all.input,
         rules.vpipe_crpv_p0_all.input,
         rules.vpipe_crpv_all.input,
-        "results/coverage_crpv.csv",
-        "results/coverage_dcv.csv",
-        f"results/crpv_all_mutations.csv",
-        f"results/dcv_all_mutations.csv",
+        "results/coverage.csv",
+        f"results/all_mutations.csv",
+        #f"results/crpv_all_mutations_lofreq.csv",
+        #f"results/dcv_all_mutations.csv",
         #f"results/all_mutations.annotated.csv",
         #f"results/crpv_all_consensus.fasta",
         #f"results/dcv_all_consensus.fasta",
@@ -68,6 +76,24 @@ use rule collect_consensus_sequences as crpv_collect_consensus_sequences with:
         fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=datasets_crpv),
     output:
         fname_merged = "results/crpv_all_consensus.fasta",
+
+rule run_lofreq:
+    input:
+        fname_bam="{dataset}/alignments/REF_aln.bam",
+        fname_reference_dcv=config['vpipe_dcv']['input']['reference'],
+        fname_reference_crpv=config['vpipe_crpv']['input']['reference'],
+        fname_reference_p0_dcv=config['viloca']['parental_dcv'],
+        fname_reference__p0_crpv=config['viloca']['parental_crpv'],
+    output:
+        fname_snv_vcf="{dataset}/variants_lofreq/snvs.vcf",
+        fname_snv_csv="{dataset}/variants_lofreq/snvs.csv",
+        dname_work=directory(
+            "{dataset}/variants_lofreq/"
+            ),
+    conda:
+        "envs/lofreq.yaml"
+    script:
+        "scripts/lofreq.py"
 
 
 rule run_viloca:
@@ -117,24 +143,18 @@ rule collect_annotated_mutations:
 
 rule collect_all_mutations:
     input:
-        fnames_snv_csv=expand("{dataset}/variants/SNVs/snvs.csv", dataset=vpipe_dcv.datasets),
+        fnames_snv_csv=expand("{dataset}/variants/SNVs/snvs.csv", dataset=datasets_crpv+datasets_dcv),
     output:
-        fname_all_mutations="results/dcv_all_mutations.csv",
+        fname_all_mutations="results/all_mutations.csv",
     conda:
         "envs/annotate_vcf.yaml"
     script:
         "./scripts/collect_mutations.py"
 
-use rule collect_all_mutations as crpv_collect_all_mutations with:
-    input:
-        fnames_snv_csv=expand("{dataset}/variants/SNVs/snvs.csv", dataset=vpipe_crpv.datasets),
-    output:
-        fname_all_mutations="results/crpv_all_mutations.csv",
-
 
 rule collect_coverage:
     input:
-        fnames_coverage=expand("{dataset}/alignments/coverage.tsv.gz", dataset=vpipe_dcv.datasets),
+        fnames_coverage=expand("{dataset}/alignments/coverage.tsv.gz", dataset=datasets_crpv+datasets_dcv),
     output:
         fname_coverage="results/coverage.csv",
         fname_read_len="results/read_len.csv",
