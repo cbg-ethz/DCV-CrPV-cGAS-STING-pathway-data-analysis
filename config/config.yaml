@@ -7,7 +7,7 @@ vpipe_dcv:
       aligner: "bwa"
 
   input:
-      reference: resources/references/ref_majority.fasta
+      reference: resources/references/ref_majority_dcv.fasta
       datadir: resources/samples
       read_length: 42
       samples_file: config/samples_dcv.tsv
