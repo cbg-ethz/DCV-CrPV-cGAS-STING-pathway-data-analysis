@@ -17,8 +17,6 @@ vpipe_dcv:
       max_coverage: 150000
 
   output:
-      datadir: results/results_vpipe
-
       snv: false
       local: false
       global: false
@@ -41,8 +39,6 @@ vpipe_dcv_p0:
       max_coverage: 150000
 
   output:
-      datadir: results/results_vpipe
-
       snv: false
       local: false
       global: false
@@ -66,16 +62,12 @@ vpipe_crpv_p0:
       max_coverage: 150000
 
   output:
-      datadir: results/results_vpipe
-
       snv: false
       local: false
       global: false
       visualization: false
       diversity: false
       QA: false
-
-output_dir: results/
 
 vpipe_crpv:
   general:
@@ -92,13 +84,9 @@ vpipe_crpv:
       max_coverage: 150000
 
   output:
-      datadir: results/results_vpipe
-
       snv: false
       local: false
       global: false
       visualization: false
       diversity: false
       QA: false
-
-output_dir: results/
