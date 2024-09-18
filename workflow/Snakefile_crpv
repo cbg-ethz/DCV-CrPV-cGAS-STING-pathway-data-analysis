@@ -94,19 +94,26 @@ rule collect_all_mutations:
     input:
         fnames_snv_csv=expand("{dataset}/variants/SNVs/snvs.csv", dataset=vpipe_crpv.datasets),
     output:
-        fname_all_mutations="results/all_mutations.csv",
+        fname_all_mutations="results/crpv_all_mutations.csv",
     conda:
         "envs/annotate_vcf.yaml"
     script:
         "./scripts/collect_mutations.py"
+
+use rule collect_all_mutations as lofreq_collect_all_mutations:
+    input:
+        fnames_snv_csv=expand("{dataset}/variants_lofreq/snvs.csv", dataset=vpipe_crpv.datasets),
+    output:
+        fname_all_mutations="results/crpv_all_mutations_lofreq.csv",
+
 
 
 rule collect_coverage:
     input:
         fnames_coverage=expand("{dataset}/alignments/coverage.tsv.gz", dataset=vpipe_crpv.datasets),
     output:
-        fname_coverage="results/coverage.csv",
-        fname_read_len="results/read_len.csv",
+        fname_coverage="results/crpv_coverage.csv",
+        fname_read_len="results/crpv_read_len.csv",
     conda:
         "envs/annotate_vcf.yaml"
     script:
