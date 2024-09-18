@@ -1,0 +1,113 @@
+from snakemake.utils import Paramspace
+import yaml
+
+def load_config(path):
+    with open(path, 'r') as stream:
+        config = yaml.safe_load(stream)
+    return config
+
+import pandas as pd
+
+#config = load_config("config/config.yaml")
+configfile: "config/config.yaml"
+
+"""
+module vpipe_crpv_p0:
+    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
+    config: config["vpipe_crpv_p0"]
+use rule * from vpipe_crpv_p0 as vpipe_crpv_p0_*
+"""
+module vpipe_crpv:
+    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
+    config: config["vpipe_crpv"]
+use rule * from vpipe_crpv as vpipe_crpv_*
+
+rule all:
+    input:
+        #rules.vpipe_crpv_p0_all.input,
+        rules.vpipe_crpv_all.input,
+        "results/crpv_coverage.csv",
+        f"results/crpv_all_mutations.csv",
+        #f"results/crpv_all_mutations_lofreq.csv",
+        #f"results/all_mutations.annotated.csv",
+        #f"results/crpv_all_consensus.fasta",
+        #f"results/dcv_all_consensus.fasta",
+        #f"results/snpgenie_codon_results.csv",
+        #f"results/snpgenie_population_summary.csv",
+        #f"results/snpgenie_product_results.csv",
+        #f"results/snpgenie_site_results.csv",
+    default_target: True
+
+rule collect_consensus_sequences:
+    input:
+        fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=vpipe_crpv.datasets),
+    output:
+        fname_merged = "results/dcv_all_consensus.fasta",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "./scripts/collect_consensus_sequences.py"
+
+rule run_lofreq:
+    input:
+        fname_bam="{dataset}/alignments/REF_aln.bam",
+        fname_reference_dcv=config['vpipe_dcv']['input']['reference'],
+        fname_reference_crpv=config['vpipe_crpv']['input']['reference'],
+        fname_reference_p0_dcv=config['viloca']['parental_dcv'],
+        fname_reference__p0_crpv=config['viloca']['parental_crpv'],
+    output:
+        fname_snv_vcf="{dataset}/variants_lofreq/snvs.vcf",
+        fname_snv_csv="{dataset}/variants_lofreq/snvs.csv",
+        dname_work=directory(
+            "{dataset}/variants_lofreq/"
+            ),
+    conda:
+        "envs/lofreq.yaml"
+    script:
+        "scripts/lofreq.py"
+
+
+rule run_viloca:
+    input:
+        fname_bam="{dataset}/alignments/REF_aln.bam",
+        fname_reference_dcv=config['vpipe_dcv']['input']['reference'],
+        fname_reference_crpv=config['vpipe_crpv']['input']['reference'],
+        fname_reference_p0_dcv=config['viloca']['parental_dcv'],
+        fname_reference__p0_crpv=config['viloca']['parental_crpv'],
+    output:
+        fname_snv_vcf="{dataset}/variants/SNVs/snvs.vcf",
+        fname_snv_csv="{dataset}/variants/SNVs/snvs.csv",
+        fname_csv="{dataset}/variants/SNVs/cooccurring_mutations.csv",
+        dname_work=directory(
+            "{dataset}/variants/SNVs/"
+            ),
+    conda:
+        "envs/viloca.yaml"
+    resources:
+        mem_mb=140000,
+        runtime=14400,
+    threads: 20
+    script:
+        "scripts/run_viloca.py"
+
+rule collect_all_mutations:
+    input:
+        fnames_snv_csv=expand("{dataset}/variants/SNVs/snvs.csv", dataset=vpipe_crpv.datasets),
+    output:
+        fname_all_mutations="results/all_mutations.csv",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "./scripts/collect_mutations.py"
+
+
+rule collect_coverage:
+    input:
+        fnames_coverage=expand("{dataset}/alignments/coverage.tsv.gz", dataset=vpipe_crpv.datasets),
+    output:
+        fname_coverage="results/coverage.csv",
+        fname_read_len="results/read_len.csv",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "./scripts/collect_coverage.py"
