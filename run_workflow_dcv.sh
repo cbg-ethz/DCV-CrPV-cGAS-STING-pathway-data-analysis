@@ -3,7 +3,7 @@ sbatch \
   --mail-type=END \
   --mem-per-cpu=2000 \
   --time=120:00:00 \
-  -o snake.out -e snake.err \
+  -o snake_dcv.out -e snake_dcv.err \
 snakemake \
 --profile profile_simple/ \
 -s workflow/Snakefile_dcv \
