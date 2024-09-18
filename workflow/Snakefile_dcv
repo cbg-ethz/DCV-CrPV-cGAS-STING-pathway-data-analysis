@@ -14,47 +14,20 @@ configfile: "config/config.yaml"
 module vpipe_dcv:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_dcv"]
-    replace_prefix:
-        {"results/": "results/dcv/",
-         "resources": "resources/samples/dcv_base"}
 use rule * from vpipe_dcv as vpipe_dcv_*
-
+"""
 module vpipe_dcv_p0:
     snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
     config: config["vpipe_dcv_p0"]
-    replace_prefix:
-        {"results/": "results/dcv_p0/",
-         "resources": "resources/samples/dcv_base"}
 use rule * from vpipe_dcv_p0 as vpipe_dcv_p0_*
-
-module vpipe_crpv_p0:
-    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
-    config: config["vpipe_crpv_p0"]
-    replace_prefix:
-        {"results/": "results/crpv_p0/",
-         "resources": "resources/samples/crpv_base"}
-use rule * from vpipe_crpv_p0 as vpipe_crpv_p0_*
-
-module vpipe_crpv:
-    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
-    config: config["vpipe_crpv"]
-    replace_prefix:
-        {"results/": "results/crpv/",
-         "resources": "resources/samples/crpv_base"}
-use rule * from vpipe_crpv as vpipe_crpv_*
-
+"""
 rule all:
     input:
         rules.vpipe_dcv_all.input,
-        rules.vpipe_dcv_p0_all.input,
-        rules.vpipe_crpv_p0_all.input,
-        rules.vpipe_crpv_all.input,
-        "results/coverage.csv",
-        f"results/all_mutations.csv",
-        #f"results/crpv_all_mutations_lofreq.csv",
-        #f"results/dcv_all_mutations.csv",
+        #rules.vpipe_dcv_p0_all.input,
+        "results/dcv_coverage.csv",
+        "results/dcv_all_mutations.csv",
         #f"results/all_mutations.annotated.csv",
-        #f"results/crpv_all_consensus.fasta",
         #f"results/dcv_all_consensus.fasta",
         #f"results/snpgenie_codon_results.csv",
         #f"results/snpgenie_population_summary.csv",
@@ -62,12 +35,9 @@ rule all:
         #f"results/snpgenie_site_results.csv",
     default_target: True
 
-datasets_dcv = vpipe_dcv.datasets + vpipe_dcv_p0.datasets
-datasets_crpv = vpipe_crpv_p0.datasets + vpipe_crpv.datasets
-
 rule collect_consensus_sequences:
     input:
-        fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=datasets_dcv),
+        fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=vpipe_dcv.datasets),
     output:
         fname_merged = "results/dcv_all_consensus.fasta",
     conda:
@@ -75,11 +45,6 @@ rule collect_consensus_sequences:
     script:
         "./scripts/collect_consensus_sequences.py"
 
-use rule collect_consensus_sequences as crpv_collect_consensus_sequences with:
-    input:
-        fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=datasets_crpv),
-    output:
-        fname_merged = "results/crpv_all_consensus.fasta",
 
 rule run_lofreq:
     input:
@@ -139,7 +104,7 @@ rule collect_annotated_mutations:
     input:
         fnames_snv_csv=expand("{dataset}/snvs.annotated.vcf", dataset=vpipe_dcv.datasets),
     output:
-        fname_all_mutations="results/all_mutations.annotated.csv",
+        fname_all_mutations="results/dcv_all_mutations.annotated.csv",
     conda:
         "envs/annotate_vcf.yaml"
     script:
@@ -147,9 +112,9 @@ rule collect_annotated_mutations:
 
 rule collect_all_mutations:
     input:
-        fnames_snv_csv=expand("{dataset}/variants/SNVs/snvs.csv", dataset=datasets_crpv+datasets_dcv),
+        fnames_snv_csv=expand("{dataset}/variants/SNVs/snvs.csv", dataset=datasets_dcv),
     output:
-        fname_all_mutations="results/all_mutations.csv",
+        fname_all_mutations="results/dcv_all_mutations.csv",
     conda:
         "envs/annotate_vcf.yaml"
     script:
@@ -160,8 +125,8 @@ rule collect_coverage:
     input:
         fnames_coverage=expand("{dataset}/alignments/coverage.tsv.gz", dataset=datasets_crpv+datasets_dcv),
     output:
-        fname_coverage="results/coverage.csv",
-        fname_read_len="results/read_len.csv",
+        fname_coverage="results/dcv_coverage.csv",
+        fname_read_len="results/dcv_read_len.csv",
     conda:
         "envs/annotate_vcf.yaml"
     script:
@@ -191,10 +156,10 @@ rule collect_snpgenie:
         fname_product_results=expand("{dataset}/variants/SNPGenie_Results_work/product_results.txt", dataset=vpipe_dcv.datasets),
         fname_site_results=expand("{dataset}/variants/SNPGenie_Results_work/site_results.txt", dataset=vpipe_dcv.datasets),
     output:
-        fname_codon=f"results/snpgenie_codon_results.csv",
-        fname_population_summary=f"results/snpgenie_population_summary.csv",
-        fname_product_results=f"results/snpgenie_product_results.csv",
-        fname_site_results=f"results/snpgenie_site_results.csv",
+        fname_codon=f"results/dcv_snpgenie_codon_results.csv",
+        fname_population_summary=f"results/dcv_snpgenie_population_summary.csv",
+        fname_product_results=f"results/dcv_snpgenie_product_results.csv",
+        fname_site_results=f"results/dcv_snpgenie_site_results.csv",
     conda:
         "envs/snpgenie.yaml"
     script:
