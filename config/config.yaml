@@ -8,7 +8,7 @@ vpipe_dcv:
 
   input:
       reference: resources/references/ref_majority_dcv.fasta
-      datadir: resources/samples
+      datadir: resources/samples/dcv_base
       read_length: 42
       samples_file: config/samples_dcv.tsv
       paired: true
@@ -30,7 +30,7 @@ vpipe_dcv_p0:
 
   input:
       reference: /cluster/work/bewi/members/lfuhrmann/DCV-CrPV-cGAMP-primed-data-analysis/resources/references/dcv_eb.fasta
-      datadir: resources/samples
+      datadir: resources/samples/dcv_base
       read_length: 42
       samples_file: config/samples_dcv_p0.tsv
       paired: true
