@@ -100,7 +100,7 @@ rule collect_all_mutations:
     script:
         "./scripts/collect_mutations.py"
 
-use rule collect_all_mutations as lofreq_collect_all_mutations:
+use rule collect_all_mutations as lofreq_collect_all_mutations with:
     input:
         fnames_snv_csv=expand("{dataset}/variants_lofreq/snvs.csv", dataset=vpipe_crpv.datasets),
     output:
