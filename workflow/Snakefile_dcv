@@ -112,7 +112,7 @@ rule collect_annotated_mutations:
 
 rule collect_all_mutations:
     input:
-        fnames_snv_csv=expand("{dataset}/variants/SNVs/snvs.csv", dataset=datasets_dcv),
+        fnames_snv_csv=expand("{dataset}/variants/SNVs/snvs.csv", dataset=vpipe_dcv.datasets),
     output:
         fname_all_mutations="results/dcv_all_mutations.csv",
     conda:
@@ -123,7 +123,7 @@ rule collect_all_mutations:
 
 rule collect_coverage:
     input:
-        fnames_coverage=expand("{dataset}/alignments/coverage.tsv.gz", dataset=datasets_crpv+datasets_dcv),
+        fnames_coverage=expand("{dataset}/alignments/coverage.tsv.gz", dataset=vpipe_dcv.datasets),
     output:
         fname_coverage="results/dcv_coverage.csv",
         fname_read_len="results/dcv_read_len.csv",
