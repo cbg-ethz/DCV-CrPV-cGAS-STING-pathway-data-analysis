@@ -57,7 +57,6 @@ rule run_lofreq:
         fname_reference__p0_crpv=config['viloca']['parental_crpv'],
     output:
         fname_snv_vcf="{dataset}/variants_lofreq/snvs.vcf",
-        fname_snv_csv="{dataset}/variants_lofreq/snvs.csv",
         dname_work=directory(
             "{dataset}/variants_lofreq/"
             ),
@@ -102,7 +101,7 @@ rule collect_all_mutations:
 
 use rule collect_all_mutations as lofreq_collect_all_mutations with:
     input:
-        fnames_snv_csv=expand("{dataset}/variants_lofreq/snvs.csv", dataset=vpipe_crpv.datasets),
+        fnames_snv_csv=expand("{dataset}/variants_lofreq/snvs.vcf", dataset=vpipe_crpv.datasets),
     output:
         fname_all_mutations="results/crpv_all_mutations_lofreq.csv",
 

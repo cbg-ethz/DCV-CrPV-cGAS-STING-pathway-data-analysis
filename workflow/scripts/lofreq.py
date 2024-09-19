@@ -1,6 +1,5 @@
 import subprocess
 from pathlib import Path
-from fuc import pyvcf
 import pandas as pd
 
 def main(
@@ -10,7 +9,6 @@ def main(
     fname_reference_p0_dcv,
     fname_reference__p0_crpv,
     fname_results_snv,
-    fname_results_csv,
     dname_work):
 
     if "parental" in str(fname_bam):
@@ -40,9 +38,6 @@ def main(
         check=True,
     )
 
-    df_vcf = pyvcf.VcfFrame.from_file(str(fname_results_snv.resolve())).df
-    df_vcf.to_csv(str(fname_results_csv.resolve()))
-
 
 if __name__ == "__main__":
     main(
@@ -52,6 +47,5 @@ if __name__ == "__main__":
         Path(snakemake.input.fname_reference_p0_dcv),
         Path(snakemake.input.fname_reference__p0_crpv),
         Path(snakemake.output.fname_snv_vcf),
-        Path(snakemake.output.fname_csv),
         Path(snakemake.output.dname_work),
     )
