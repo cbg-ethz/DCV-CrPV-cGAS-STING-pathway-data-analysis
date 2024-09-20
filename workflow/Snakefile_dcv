@@ -27,6 +27,7 @@ rule all:
         #rules.vpipe_dcv_p0_all.input,
         "results/dcv_coverage.csv",
         "results/dcv_all_mutations.csv",
+        "results/dcv_all_mutations_lofreq.csv"
         #f"results/all_mutations.annotated.csv",
         #f"results/dcv_all_consensus.fasta",
         #f"results/snpgenie_codon_results.csv",
@@ -119,6 +120,14 @@ rule collect_all_mutations:
         "envs/annotate_vcf.yaml"
     script:
         "./scripts/collect_mutations.py"
+
+use rule collect_all_mutations as lofreq_collect_all_mutations with:
+    input:
+        fnames_snv_csv=expand("{dataset}/variants_lofreq/snvs.vcf", dataset=vpipe_dcv.datasets),
+    output:
+        fname_all_mutations="results/dcv_all_mutations_lofreq.csv",
+
+
 
 
 rule collect_coverage:
