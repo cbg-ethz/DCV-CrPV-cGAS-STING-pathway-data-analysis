@@ -27,7 +27,8 @@ rule all:
         #rules.vpipe_dcv_p0_all.input,
         "results/dcv_coverage.csv",
         "results/dcv_all_mutations.csv",
-        "results/dcv_all_mutations_lofreq.csv"
+        "results/dcv_all_mutations_lofreq.csv",
+        "results/dcv_read_length.csv",
         #f"results/all_mutations.annotated.csv",
         #f"results/dcv_all_consensus.fasta",
         #f"results/snpgenie_codon_results.csv",
@@ -45,6 +46,26 @@ rule collect_consensus_sequences:
         "envs/annotate_vcf.yaml"
     script:
         "./scripts/collect_consensus_sequences.py"
+
+rule read_length:
+    input:
+        fname_bam="{dataset}/alignments/REF_aln.bam",
+    output:
+        fname_csv="{dataset}/alignments/read_len_detail.csv",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "scripts/read_length.py"
+
+rule collect_read_length:
+    input:
+        fnames_coverage=expand("{dataset}/alignments/read_len_detail.csv", dataset=vpipe_dcv.datasets),
+    output:
+        fname_coverage="results/dcv_read_length.csv",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "./scripts/collect_coverage.py"
 
 
 rule run_lofreq:
