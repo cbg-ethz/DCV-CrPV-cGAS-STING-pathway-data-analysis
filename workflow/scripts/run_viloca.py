@@ -10,7 +10,8 @@ def main(
     fname_snv_vcf,
     fname_snv_csv,
     fname_csv,
-    dname_work):
+    dname_work,
+    window_size):
 
     # get the correct reference
     print(fname_bam)
@@ -27,7 +28,7 @@ def main(
 
     alpha = 0.0001
     n_max_haplotypes = 100
-    window_size = 33 #42
+    #window_size = 33 #42
 
     dname_work.mkdir(parents=True, exist_ok=True)
 
@@ -47,6 +48,8 @@ def main(
             str(n_max_haplotypes),
             "-w",
             str(window_size),
+            "--threshold",
+            "0.0"
             "--min_windows_coverage",
             "1",
             "--NO-strand_bias_filter",
@@ -66,4 +69,5 @@ if __name__ == "__main__":
         Path(snakemake.output.fname_snv_csv),
         Path(snakemake.output.fname_csv),
         Path(snakemake.output.dname_work),
+        snakefile.params.window_size,
     )

@@ -29,6 +29,7 @@ rule all:
         "results/dcv_all_mutations.csv",
         "results/dcv_all_mutations_lofreq.csv",
         "results/dcv_read_length.csv",
+        "results/dcv/W_p1_b/variants_w30/SNVs/snv/SNVs_0.010000_final.csv",
         #f"results/all_mutations.annotated.csv",
         #f"results/dcv_all_consensus.fasta",
         #f"results/snpgenie_codon_results.csv",
@@ -93,6 +94,8 @@ rule run_viloca:
         fname_reference_crpv=config['vpipe_crpv']['input']['reference'],
         fname_reference_p0_dcv=config['viloca']['parental_dcv'],
         fname_reference__p0_crpv=config['viloca']['parental_crpv'],
+    params:
+        window_size=55,
     output:
         fname_snv_vcf="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.vcf",
         fname_snv_csv="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.csv",
@@ -108,6 +111,15 @@ rule run_viloca:
     threads: 40
     script:
         "scripts/run_viloca.py"
+
+use rule run_viloca as run_viloca_w30 with:
+    params:
+        window_size=30,
+    output:
+        fname_snv_vcf="{dataset}/variants_w30/SNVs/snv/SNVs_0.010000_final.vcf",
+        fname_snv_csv="{dataset}/variants_w30/SNVs/snv/SNVs_0.010000_final.csv",
+        fname_csv="{dataset}/variants_w30/SNVs/snv/cooccurring_mutations.csv",
+        dname_work=directory("{dataset}/variants_w30/SNVs/"),
 
 
 rule annotate_vcf:
