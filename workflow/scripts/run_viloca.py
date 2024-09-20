@@ -27,7 +27,7 @@ def main(
 
     alpha = 0.0001
     n_max_haplotypes = 100
-    window_size = 42
+    window_size = 33 #42
 
     dname_work.mkdir(parents=True, exist_ok=True)
 
@@ -48,7 +48,7 @@ def main(
             "-w",
             str(window_size),
             "--min_windows_coverage",
-            "2",
+            "1",
             "--NO-strand_bias_filter",
         ],
         cwd=dname_work,
