@@ -56,7 +56,6 @@ rule run_lofreq:
         fname_reference__p0_crpv=config['viloca']['parental_crpv'],
     output:
         fname_snv_vcf="{dataset}/variants_lofreq/snvs.vcf",
-        fname_snv_csv="{dataset}/variants_lofreq/snvs.csv",
         dname_work=directory(
             "{dataset}/variants_lofreq/"
             ),
