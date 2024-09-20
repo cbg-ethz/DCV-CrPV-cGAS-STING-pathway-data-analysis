@@ -10,4 +10,4 @@ dependencies:
  - pandas
  - pip
  - pip:
-   - git+https://github.com/cbg-ethz/VILOCA@master
+   - git+https://github.com/cbg-ethz/VILOCA@dev

@@ -54,10 +54,6 @@ def main(
         cwd=dname_work,
     )
 
-    (dname_work / "snv" / "SNVs_0.010000_final.vcf").rename(fname_snv_vcf)
-    (dname_work / "snv" / "SNVs_0.010000_final.csv").rename(fname_snv_csv)
-    (dname_work / "snv" / "cooccurring_mutations.csv").rename(fname_csv)
-
 
 if __name__ == "__main__":
     main(
