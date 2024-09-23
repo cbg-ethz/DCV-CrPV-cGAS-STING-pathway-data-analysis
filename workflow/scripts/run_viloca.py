@@ -69,5 +69,5 @@ if __name__ == "__main__":
         Path(snakemake.output.fname_snv_csv),
         Path(snakemake.output.fname_csv),
         Path(snakemake.output.dname_work),
-        snakefile.params.window_size,
+        snakemake.params.window_size,
     )
