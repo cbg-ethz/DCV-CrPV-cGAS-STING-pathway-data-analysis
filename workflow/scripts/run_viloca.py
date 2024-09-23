@@ -49,7 +49,7 @@ def main(
             "-w",
             str(window_size),
             "--threshold",
-            "0.0"
+            "0.0",
             "--min_windows_coverage",
             "1",
             "--NO-strand_bias_filter",
