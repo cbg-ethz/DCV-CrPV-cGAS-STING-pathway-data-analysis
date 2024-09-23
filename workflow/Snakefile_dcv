@@ -95,7 +95,7 @@ rule run_viloca:
         fname_reference_p0_dcv=config['viloca']['parental_dcv'],
         fname_reference__p0_crpv=config['viloca']['parental_crpv'],
     params:
-        window_size=55,
+        window_size=54,
     output:
         fname_snv_vcf="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.vcf",
         fname_snv_csv="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.csv",
