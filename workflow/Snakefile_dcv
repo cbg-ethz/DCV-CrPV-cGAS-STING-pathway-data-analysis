@@ -41,7 +41,7 @@ rule all:
 
 rule count_sequences:
     input:
-        datadir=config[vpipe_dcv][input][datadir],
+        datadir=config["vpipe_dcv"]["input"]["datadir"],
     output:
         fname="dcv_sequence_counts.tsv",
     conda:
