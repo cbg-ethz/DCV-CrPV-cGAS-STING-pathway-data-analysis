@@ -40,21 +40,14 @@ rule all:
     default_target: True
 
 rule count_sequences:
+    input:
+        datadir=config[vpipe_dcv][input][datadir],
     output:
-        "dcv_sequence_counts.tsv"
+        fname="dcv_sequence_counts.tsv",
     conda:
         "envs/seqtk.yaml"
-    run:
-        import os
-
-        with open(output[0], 'w') as outfile:
-            outfile.write("File\tNumber of Sequences\n")
-
-            for root, dirs, files in os.walk("{config[vpipe_dcv][input][datadir]}"):
-                for file in files:
-                    if file.endswith(".fastq"):
-                        count = os.popen("seqtk seq -A " + os.path.join(root, file) + " | wc -l").read().strip()
-                        outfile.write(f"{file}\t{count}\n")
+    script:
+        "./scripts/collect_consensus_sequences.py"
 
 rule collect_consensus_sequences:
     input:
