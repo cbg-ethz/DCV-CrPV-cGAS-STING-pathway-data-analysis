@@ -40,7 +40,7 @@ rule all:
     default_target: True
 
 
-sample_list = [ sample.split("results")[1] for sample in vpipe_dcv.datasets]
+sample_list = [ sample.split("results/")[1] for sample in vpipe_dcv.datasets]
 rule count_sequences:
     input:
         fastq_files=expand(config["vpipe_dcv"]["input"]["datadir"]+"/{sample}/raw_data/*.fastq", sample=sample_list)
