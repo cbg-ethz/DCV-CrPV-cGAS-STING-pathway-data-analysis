@@ -24,6 +24,7 @@ use rule * from vpipe_dcv_p0 as vpipe_dcv_p0_*
 rule all:
     input:
         rules.vpipe_dcv_all.input,
+        "dcv_sequence_counts.tsv",
         #rules.vpipe_dcv_p0_all.input,
         "results/dcv_coverage.csv",
         "results/dcv_all_mutations.csv",
@@ -37,6 +38,25 @@ rule all:
         #f"results/snpgenie_product_results.csv",
         #f"results/snpgenie_site_results.csv",
     default_target: True
+
+
+sample_list = [ sample.split("results")[1] for sample in vpipe_dcv.datasets]
+rule count_sequences:
+    input:
+        fastq_files=expand(config["vpipe_dcv"]["input"]["datadir"]+"/{sample}/raw_data/*.fastq", sample=sample_list)
+    output:
+        "dcv_sequence_counts.tsv"
+    conda:
+        "envs/seqtk.yaml"
+    shell:
+        """
+        echo "File\tNumber of Sequences" > {output}
+        for file in {" ".join(input.fastq_files)}; do
+            count=$(seqtk seq -A $file | wc -l)
+            base=$(basename $file)
+            echo "$base\t$count" >> {output}
+        done
+        """
 
 rule collect_consensus_sequences:
     input:
