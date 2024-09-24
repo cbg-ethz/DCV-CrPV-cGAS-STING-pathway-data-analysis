@@ -43,7 +43,7 @@ rule all:
 sample_list = [ sample.split("results/")[1] for sample in vpipe_dcv.datasets]
 rule count_sequences:
     input:
-        fastq_files=expand(config[vpipe_dcv][input][datadir]+"/{sample}/raw_data/{file_name}.fastq", sample=sample_list)
+        fastq_files=expand(config[vpipe_dcv][input][datadir]+"/{sample}/raw_data/{raw_file_name}.fastq", sample=sample_list)
     output:
         "dcv_sequence_counts.tsv"
     conda:
