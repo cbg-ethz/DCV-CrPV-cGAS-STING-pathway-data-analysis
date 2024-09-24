@@ -39,24 +39,22 @@ rule all:
         #f"results/snpgenie_site_results.csv",
     default_target: True
 
-
-sample_list = [ sample.split("results/")[1] for sample in vpipe_dcv.datasets]
 rule count_sequences:
-    input:
-        fastq_files=expand(config[vpipe_dcv][input][datadir]+"/{sample}/raw_data/{raw_file_name}.fastq", sample=sample_list)
     output:
         "dcv_sequence_counts.tsv"
     conda:
         "envs/seqtk.yaml"
-    shell:
-        """
-        echo "File\tNumber of Sequences" > {output}
-        for file in {" ".join(input.fastq_files)}; do
-            count=$(seqtk seq -A $file | wc -l)
-            base=$(basename $file)
-            echo "$base\t$count" >> {output}
-        done
-        """
+    run:
+        import os
+
+        with open(output[0], 'w') as outfile:
+            outfile.write("File\tNumber of Sequences\n")
+
+            for root, dirs, files in os.walk("{config[vpipe_dcv][input][datadir]}"):
+                for file in files:
+                    if file.endswith(".fastq"):
+                        count = os.popen("seqtk seq -A " + os.path.join(root, file) + " | wc -l").read().strip()
+                        outfile.write(f"{file}\t{count}\n")
 
 rule collect_consensus_sequences:
     input:
