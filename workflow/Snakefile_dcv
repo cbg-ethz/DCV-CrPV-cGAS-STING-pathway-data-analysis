@@ -47,7 +47,7 @@ rule count_sequences:
     conda:
         "envs/seqtk.yaml"
     script:
-        "./scripts/collect_consensus_sequences.py"
+        "./scripts/count_sequences.py"
 
 rule collect_consensus_sequences:
     input:
