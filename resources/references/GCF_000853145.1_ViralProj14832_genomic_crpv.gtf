@@ -1,0 +1,11 @@
+#gtf-version 2.2
+#!genome-build ViralProj14832
+#!genome-build-accession NCBI_Assembly:GCF_000853145.1
+NC_003924.1	RefSeq	gene	709	6024	.	+	.	gene_id "CrPVgp1"; transcript_id ""; db_xref "GeneID:944541"; gbkey "Gene"; gene_biotype "protein_coding"; locus_tag "CrPVgp1"; 
+NC_003924.1	RefSeq	CDS	709	6021	.	+	0	gene_id "CrPVgp1"; transcript_id "unassigned_transcript_1"; gbkey "CDS"; locus_tag "CrPVgp1"; product "nonstructural polyprotein"; protein_id "NP_647481.1"; exon_number "1"; 
+NC_003924.1	RefSeq	start_codon	709	711	.	+	0	gene_id "CrPVgp1"; transcript_id "unassigned_transcript_1"; gbkey "CDS"; locus_tag "CrPVgp1"; product "nonstructural polyprotein"; protein_id "NP_647481.1"; exon_number "1"; 
+NC_003924.1	RefSeq	stop_codon	6022	6024	.	+	0	gene_id "CrPVgp1"; transcript_id "unassigned_transcript_1"; gbkey "CDS"; locus_tag "CrPVgp1"; product "nonstructural polyprotein"; protein_id "NP_647481.1"; exon_number "1"; 
+NC_003924.1	RefSeq	gene	6217	8904	.	+	.	gene_id "CrPVgp2"; transcript_id ""; db_xref "GeneID:944542"; gbkey "Gene"; gene_biotype "protein_coding"; locus_tag "CrPVgp2"; 
+NC_003924.1	RefSeq	CDS	6217	8901	.	+	0	gene_id "CrPVgp2"; transcript_id "unassigned_transcript_2"; gbkey "CDS"; locus_tag "CrPVgp2"; partial "true"; product "structural polyprotein"; protein_id "NP_647482.1"; exon_number "1"; 
+NC_003924.1	RefSeq	stop_codon	8902	8904	.	+	0	gene_id "CrPVgp2"; transcript_id "unassigned_transcript_2"; gbkey "CDS"; locus_tag "CrPVgp2"; partial "true"; product "structural polyprotein"; protein_id "NP_647482.1"; exon_number "1"; 
+###

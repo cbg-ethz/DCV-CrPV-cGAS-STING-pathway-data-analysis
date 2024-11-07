@@ -91,6 +91,27 @@ rule run_viloca:
     script:
         "scripts/run_viloca.py"
 
+rule annotate_vcf:
+    input:
+        fname_snvs_vcf=rules.run_viloca.output.fname_snv_vcf,
+        fname_genbank_file="GCF_000853145.1_ViralProj14832_genomic_crpv.gbff",
+    output:
+        fname_snvs_vcf="{dataset}/snvs.annotated.vcf",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "./scripts/annotate_vcf.py"
+
+rule collect_annotated_mutations:
+    input:
+        fnames_snv_csv=expand("{dataset}/snvs.annotated.vcf", dataset=vpipe_crpv.datasets),
+    output:
+        fname_all_mutations="results/crpv_all_mutations.annotated.csv",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "./scripts/collect_annotated_mutations.py"
+
 rule collect_all_mutations:
     input:
         fnames_snv_csv=expand("{dataset}/variants/SNVs/snv/SNVs_0.010000_final.csv", dataset=vpipe_crpv.datasets),
@@ -119,3 +140,35 @@ rule collect_coverage:
         "envs/annotate_vcf.yaml"
     script:
         "./scripts/collect_coverage.py"
+
+rule run_snpgenie:
+    input:
+        fname_snvs_vcf="{dataset}/variants/SNVs/snvs.vcf",
+        fname_reference=config['vpipe_crpv']['input']['reference'],
+        fname_gtffile="resources/references/GCF_000853145.1_ViralProj14832_genomic_crpv.gtf",
+    output:
+        fname_codon="{dataset}/variants/SNPGenie_Results_work/codon_results.txt",
+        fname_population_summary="{dataset}/variants/SNPGenie_Results_work/population_summary.txt",
+        fname_product_results="{dataset}/variants/SNPGenie_Results_work/product_results.txt",
+        fname_site_results="{dataset}/variants/SNPGenie_Results_work/site_results.txt",
+        dname_work=directory("{dataset}/variants/SNPGenie_Results_work/"),
+    conda:
+        "envs/snpgenie.yaml"
+    script:
+        "./scripts/run_snpgenie.py"
+
+rule collect_snpgenie:
+    input:
+        fname_codon=expand("{dataset}/variants/SNPGenie_Results_work/codon_results.txt", dataset=vpipe_crpv.datasets),
+        fname_population_summary=expand("{dataset}/variants/SNPGenie_Results_work/population_summary.txt", dataset=vpipe_crpv.datasets),
+        fname_product_results=expand("{dataset}/variants/SNPGenie_Results_work/product_results.txt", dataset=vpipe_crpv.datasets),
+        fname_site_results=expand("{dataset}/variants/SNPGenie_Results_work/site_results.txt", dataset=vpipe_crpv.datasets),
+    output:
+        fname_codon=f"results/crpv_snpgenie_codon_results.csv",
+        fname_population_summary=f"results/crpv_snpgenie_population_summary.csv",
+        fname_product_results=f"results/crpv_snpgenie_product_results.csv",
+        fname_site_results=f"results/crpv_snpgenie_site_results.csv",
+    conda:
+        "envs/snpgenie.yaml"
+    script:
+        "./scripts/collect_snpgenie_results.py"
