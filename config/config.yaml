@@ -74,7 +74,7 @@ vpipe_crpv:
       aligner: "bwa"
 
   input:
-      reference: resources/references/ref_majority_crpv.fasta
+      reference: resources/references/crpv.consensus.bcftools.fasta
       datadir: resources/samples/crpv_base
       read_length: 42
       samples_file: config/samples_crpv.tsv
