@@ -29,6 +29,7 @@ rule all:
         "results/crpv_coverage.csv",
         "results/crpv_all_mutations.csv",
         "results/crpv_all_mutations_lofreq.csv",
+        "results/crpv_all_mutations.annotated.csv",
         #f"results/all_mutations.annotated.csv",
         #f"results/crpv_all_consensus.fasta",
         #f"results/dcv_all_consensus.fasta",
@@ -38,9 +39,12 @@ rule all:
         #f"results/snpgenie_site_results.csv",
     default_target: True
 
+datasets = vpipe_crpv.datasets + ['results/crpv/parental_p0']
+
+
 rule collect_consensus_sequences:
     input:
-        fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=vpipe_crpv.datasets),
+        fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=datasets),
     output:
         fname_merged = "results/dcv_all_consensus.fasta",
     conda:
@@ -104,7 +108,7 @@ rule annotate_vcf:
 
 rule collect_annotated_mutations:
     input:
-        fnames_snv_csv=expand("{dataset}/snvs.annotated.vcf", dataset=vpipe_crpv.datasets),
+        fnames_snv_csv=expand("{dataset}/snvs.annotated.vcf", dataset=datasets),
     output:
         fname_all_mutations="results/crpv_all_mutations.annotated.csv",
     conda:
@@ -114,7 +118,7 @@ rule collect_annotated_mutations:
 
 rule collect_all_mutations:
     input:
-        fnames_snv_csv=expand("{dataset}/variants/SNVs/snv/SNVs_0.010000_final.csv", dataset=vpipe_crpv.datasets),
+        fnames_snv_csv=expand("{dataset}/variants/SNVs/snv/SNVs_0.010000_final.csv", dataset=datasets),
     output:
         fname_all_mutations="results/crpv_all_mutations.csv",
     conda:
@@ -124,7 +128,7 @@ rule collect_all_mutations:
 
 use rule collect_all_mutations as lofreq_collect_all_mutations with:
     input:
-        fnames_snv_csv=expand("{dataset}/variants_lofreq/snvs.vcf", dataset=vpipe_crpv.datasets),
+        fnames_snv_csv=expand("{dataset}/variants_lofreq/snvs.vcf", dataset=datasets),
     output:
         fname_all_mutations="results/crpv_all_mutations_lofreq.csv",
 
@@ -132,7 +136,7 @@ use rule collect_all_mutations as lofreq_collect_all_mutations with:
 
 rule collect_coverage:
     input:
-        fnames_coverage=expand("{dataset}/alignments/coverage.tsv.gz", dataset=vpipe_crpv.datasets),
+        fnames_coverage=expand("{dataset}/alignments/coverage.tsv.gz", dataset=datasets),
     output:
         fname_coverage="results/crpv_coverage.csv",
         fname_read_len="results/crpv_read_len.csv",
