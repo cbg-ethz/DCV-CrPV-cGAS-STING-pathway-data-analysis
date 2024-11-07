@@ -98,7 +98,7 @@ rule run_viloca:
 rule annotate_vcf:
     input:
         fname_snvs_vcf=rules.run_viloca.output.fname_snv_vcf,
-        fname_genbank_file="GCF_000853145.1_ViralProj14832_genomic_crpv.gbff",
+        fname_genbank_file="resources/references/GCF_000853145.1_ViralProj14832_genomic_crpv.gbff",
     output:
         fname_snvs_vcf="{dataset}/snvs.annotated.vcf",
     conda:
