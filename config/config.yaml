@@ -1,6 +1,6 @@
 viloca:
   parental_dcv: resources/references/ref_majority_dcv.fasta
-  parental_crpv: resources/references/ref_majority_crpv.fasta
+  parental_crpv: resources/references/crpv.consensus.bcftools.fasta
 
 vpipe_dcv:
   general:
