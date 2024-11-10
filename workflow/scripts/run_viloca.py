@@ -28,7 +28,8 @@ def main(
 
     alpha = 0.0001
     n_max_haplotypes = 100
-    #window_size = 33 #42
+    # n_starts = 1 as default
+    # unique modus is on per default
 
     dname_work.mkdir(parents=True, exist_ok=True)
 
