@@ -12,46 +12,31 @@ import pandas as pd
 configfile: "config/config.yaml"
 
 module vpipe_dcv:
-    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
+    snakefile: "../../V-pipe/workflow/Snakefile"
     config: config["vpipe_dcv"]
 use rule * from vpipe_dcv as vpipe_dcv_*
+
 """
 module vpipe_dcv_p0:
-    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
+    snakefile: "../../V-pipe/workflow/Snakefile"
     config: config["vpipe_dcv_p0"]
 use rule * from vpipe_dcv_p0 as vpipe_dcv_p0_*
 """
 rule all:
     input:
         rules.vpipe_dcv_all.input,
-        "dcv_sequence_counts.tsv",
         #rules.vpipe_dcv_p0_all.input,
         "results/dcv_coverage.csv",
         "results/dcv_all_mutations.csv",
         "results/dcv_all_mutations_lofreq.csv",
-        "results/dcv_read_length.csv",
-        "results/dcv/W_p1_b/variants_w30/SNVs/snv/SNVs_0.010000_final.csv",
-        #f"results/all_mutations.annotated.csv",
-        #f"results/dcv_all_consensus.fasta",
-        #f"results/snpgenie_codon_results.csv",
-        #f"results/snpgenie_population_summary.csv",
-        #f"results/snpgenie_product_results.csv",
-        #f"results/snpgenie_site_results.csv",
+        "results/dcv_all_mutations.annotated.csv",
     default_target: True
 
-rule count_sequences:
-    input:
-        datadir=config["vpipe_dcv"]["input"]["datadir"],
-    output:
-        fname="dcv_sequence_counts.tsv",
-    conda:
-        "envs/seqtk.yaml"
-    script:
-        "./scripts/count_sequences.py"
+datasets = vpipe_dcv.datasets + ['results/dcv/parental_p0']
 
 rule collect_consensus_sequences:
     input:
-        fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=vpipe_dcv.datasets),
+        fnames_consensus = expand("{dataset}/references/ref_majority.fasta", dataset=datasets),
     output:
         fname_merged = "results/dcv_all_consensus.fasta",
     conda:
@@ -71,7 +56,7 @@ rule read_length:
 
 rule collect_read_length:
     input:
-        fnames_coverage=expand("{dataset}/alignments/read_len_detail.csv", dataset=vpipe_dcv.datasets),
+        fnames_coverage=expand("{dataset}/alignments/read_len_detail.csv", dataset=datasets),
     output:
         fname_coverage="results/dcv_read_length.csv",
     conda:
@@ -123,15 +108,6 @@ rule run_viloca:
     script:
         "scripts/run_viloca.py"
 
-use rule run_viloca as run_viloca_w30 with:
-    params:
-        window_size=30,
-    output:
-        fname_snv_vcf="{dataset}/variants_w30/SNVs/snv/SNVs_0.010000_final.vcf",
-        fname_snv_csv="{dataset}/variants_w30/SNVs/snv/SNVs_0.010000_final.csv",
-        fname_csv="{dataset}/variants_w30/SNVs/snv/cooccurring_mutations.csv",
-        dname_work=directory("{dataset}/variants_w30/SNVs/"),
-
 
 rule annotate_vcf:
     input:
@@ -146,7 +122,7 @@ rule annotate_vcf:
 
 rule collect_annotated_mutations:
     input:
-        fnames_snv_csv=expand("{dataset}/snvs.annotated.vcf", dataset=vpipe_dcv.datasets),
+        fnames_snv_csv=expand("{dataset}/snvs.annotated.vcf", dataset=datasets),
     output:
         fname_all_mutations="results/dcv_all_mutations.annotated.csv",
     conda:
@@ -156,7 +132,7 @@ rule collect_annotated_mutations:
 
 rule collect_all_mutations:
     input:
-        fnames_snv_csv=expand("{dataset}/variants/SNVs/snv/SNVs_0.010000_final.csv", dataset=vpipe_dcv.datasets),
+        fnames_snv_csv=expand("{dataset}/variants/SNVs/snv/SNVs_0.010000_final.csv", dataset=datasets),
     output:
         fname_all_mutations="results/dcv_all_mutations.csv",
     conda:
@@ -166,16 +142,14 @@ rule collect_all_mutations:
 
 use rule collect_all_mutations as lofreq_collect_all_mutations with:
     input:
-        fnames_snv_csv=expand("{dataset}/variants_lofreq/snvs.vcf", dataset=vpipe_dcv.datasets),
+        fnames_snv_csv=expand("{dataset}/variants_lofreq/snvs.vcf", dataset=datasets),
     output:
         fname_all_mutations="results/dcv_all_mutations_lofreq.csv",
 
 
-
-
 rule collect_coverage:
     input:
-        fnames_coverage=expand("{dataset}/alignments/coverage.tsv.gz", dataset=vpipe_dcv.datasets),
+        fnames_coverage=expand("{dataset}/alignments/coverage.tsv.gz", dataset=datasets),
     output:
         fname_coverage="results/dcv_coverage.csv",
         fname_read_len="results/dcv_read_len.csv",
@@ -203,10 +177,10 @@ rule run_snpgenie:
 
 rule collect_snpgenie:
     input:
-        fname_codon=expand("{dataset}/variants/SNPGenie_Results_work/codon_results.txt", dataset=vpipe_dcv.datasets),
-        fname_population_summary=expand("{dataset}/variants/SNPGenie_Results_work/population_summary.txt", dataset=vpipe_dcv.datasets),
-        fname_product_results=expand("{dataset}/variants/SNPGenie_Results_work/product_results.txt", dataset=vpipe_dcv.datasets),
-        fname_site_results=expand("{dataset}/variants/SNPGenie_Results_work/site_results.txt", dataset=vpipe_dcv.datasets),
+        fname_codon=expand("{dataset}/variants/SNPGenie_Results_work/codon_results.txt", dataset=datasets),
+        fname_population_summary=expand("{dataset}/variants/SNPGenie_Results_work/population_summary.txt", dataset=datasets),
+        fname_product_results=expand("{dataset}/variants/SNPGenie_Results_work/product_results.txt", dataset=datasets),
+        fname_site_results=expand("{dataset}/variants/SNPGenie_Results_work/site_results.txt", dataset=datasets),
     output:
         fname_codon=f"results/dcv_snpgenie_codon_results.csv",
         fname_population_summary=f"results/dcv_snpgenie_population_summary.csv",
