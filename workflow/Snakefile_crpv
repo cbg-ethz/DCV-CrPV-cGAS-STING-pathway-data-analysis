@@ -13,12 +13,12 @@ configfile: "config/config.yaml"
 
 """
 module vpipe_crpv_p0:
-    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
+    snakefile: "../../V-pipe/workflow/Snakefile"
     config: config["vpipe_crpv_p0"]
 use rule * from vpipe_crpv_p0 as vpipe_crpv_p0_*
 """
 module vpipe_crpv:
-    snakefile: github("cbg-ethz/V-pipe", path="workflow/Snakefile", tag="v3.0.0.pre0")  # "../resources/V-pipe/workflow/Snakefile"
+    snakefile: "../../V-pipe/workflow/Snakefile"
     config: config["vpipe_crpv"]
 use rule * from vpipe_crpv as vpipe_crpv_*
 

@@ -95,7 +95,6 @@ rule run_viloca:
     output:
         fname_snv_vcf="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.vcf",
         fname_snv_csv="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.csv",
-        fname_csv="{dataset}/variants/SNVs/snv/cooccurring_mutations.csv",
         dname_work=directory(
             "{dataset}/variants/SNVs/"
             ),

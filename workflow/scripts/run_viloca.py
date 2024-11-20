@@ -9,7 +9,6 @@ def main(
     fname_reference__p0_crpv,
     fname_snv_vcf,
     fname_snv_csv,
-    fname_csv,
     dname_work,
     window_size):
 
@@ -68,7 +67,6 @@ if __name__ == "__main__":
         Path(snakemake.input.fname_reference__p0_crpv),
         Path(snakemake.output.fname_snv_vcf),
         Path(snakemake.output.fname_snv_csv),
-        Path(snakemake.output.fname_csv),
         Path(snakemake.output.dname_work),
         snakemake.params.window_size,
     )
