@@ -130,7 +130,7 @@ class Annotator(object):
                     record.INFO['VariantType'] = 'Deletion'
                 else:
                     record.INFO['VariantType'] = 'Insertion'
-            elif "-" in record.ALT:
+            elif ("-" in record.ALT) or("-" in record.REF) :
                     record.INFO['VariantType'] = 'Indel'
             else:
                 if len(record.ALT) > 1:
