@@ -369,7 +369,7 @@ class VCFTools(object):
 def update_vcf_chrom(in_vcf, out_vcf, chrom_name):
     vf = pyvcf.VcfFrame.from_file(in_vcf)
     vf.df['CHROM'] = chrom_name
-    vf.df = vf.df[vf.df['ALT']!='-']
+    #vf.df = vf.df[vf.df['ALT']!='-']
     vf.to_file(out_vcf)
 
 def main(fname_snv_in, fname_genbank_file, chrom_name, fname_snv_out):
@@ -388,6 +388,6 @@ if __name__ == "__main__":
     main(
         snakemake.input.fname_snvs_vcf,
         snakemake.input.fname_genbank_file,
-        snakefile.params.chrom_name,
+        snakemake.params.chrom_name,
         snakemake.output.fname_snvs_vcf,
     )
