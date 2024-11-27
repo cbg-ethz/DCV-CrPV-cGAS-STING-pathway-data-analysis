@@ -18,11 +18,13 @@ def main(fnames_snv_csv, fout_all_mutations_csv):
             df_tmp["virus"] = f_snv_vcf.split("/variants")[0].split("/")[-3]
             df_tmp["rep"] = f_snv_vcf.split("/variants")[0].split("/")[-2]
             df_tmp["passage"] = f_snv_vcf.split("/variants")[0].split("/")[-1]
+            df_tmp['file'] = f_snv_vcf
         else:
             df_tmp = pd.read_csv(f_snv_vcf)
             df_tmp["virus"] = f_snv_vcf.split("/variants")[0].split("/")[-3]
             df_tmp["rep"] = f_snv_vcf.split("/variants")[0].split("/")[-2]
             df_tmp["passage"] = f_snv_vcf.split("/variants")[0].split("/")[-1]
+            df_tmp['file'] = f_snv_vcf
 
         tmp.append(df_tmp)
 
