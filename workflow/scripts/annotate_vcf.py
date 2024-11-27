@@ -130,6 +130,8 @@ class Annotator(object):
                     record.INFO['VariantType'] = 'Deletion'
                 else:
                     record.INFO['VariantType'] = 'Insertion'
+            elif "-" in record.ALT:
+                    record.INFO['VariantType'] = 'Indel'
             else:
                 if len(record.ALT) > 1:
                     record.ALT = self.__gb.determine_iupac_base(record.ALT)
