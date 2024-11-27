@@ -114,6 +114,8 @@ rule annotate_vcf:
         fname_genbank_file="resources/references/dcv_eb_annotations.gbff",
     output:
         fname_snvs_vcf="{dataset}/snvs.annotated.vcf",
+    params:
+        chrom_name="NC_001834.1",
     conda:
         "envs/annotate_vcf.yaml"
     script:
