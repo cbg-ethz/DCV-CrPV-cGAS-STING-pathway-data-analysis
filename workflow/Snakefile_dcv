@@ -129,7 +129,7 @@ rule collect_annotated_mutations:
     conda:
         "envs/annotate_vcf.yaml"
     script:
-        "./scripts/collect_annotated_mutations.py"
+        "./scripts/collect_mutations.py"
 
 rule collect_all_mutations:
     input:
