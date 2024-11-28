@@ -33,6 +33,7 @@ def main(fname_crpv, fname_dcv, fname_out, posterior_threshold):
     df['coverage'] = df['Ftot'] + df['Rtot']
     df['n_var'] = df['Rvar'] + df['Fvar']
     df['freq'] = df['n_var'] / df['coverage']
+    df['sample']=df['file'].str.split('/').str[-2]
 
     df['windows_pass_posterior'] = df.apply(f_windows_pass_posterior, axis=1).astype(float)
     df['windows_covering_positions'] = df.apply(f_windows_covering_positions, axis=1)
