@@ -1,0 +1,21 @@
+"""
+Use this Snakefile to collect DCV and CrPV mutations
+and filter them.
+"""
+
+rule all:
+    input:
+        "results/all_mutations.annotated.filtered.csv",
+    default_target: True
+
+
+rule filter_and_merge_mutations:
+    input:
+        fname_dcv="results/crpv_all_mutations.annotated.csv",
+        fname_crpv="results/dcv_all_mutations.annotated.csv",
+    output:
+        fname_out="results/all_mutations.annotated.filtered.csv",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "scripts/filter_and_merge_mutations.py"
