@@ -73,8 +73,8 @@ rule run_lofreq:
 rule run_viloca:
     input:
         fname_bam="{dataset}/alignments/REF_aln.bam",
-        fname_reference_dcv=config['vpipe_dcv']['input']['reference'],
-        fname_reference_crpv=config['vpipe_crpv']['input']['reference'],
+        fname_reference_dcv=config['vpipe_dcv_p0']['input']['reference'],
+        fname_reference_crpv=config['vpipe_crpv_p0']['input']['reference'],
         fname_reference_p0_dcv=config['viloca']['parental_dcv'],
         fname_reference__p0_crpv=config['viloca']['parental_crpv'],
     params:
