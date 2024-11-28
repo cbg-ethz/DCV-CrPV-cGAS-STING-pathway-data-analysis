@@ -38,7 +38,7 @@ def main(fname_crpv, fname_dcv, fname_out, posterior_threshold):
     df['windows_covering_positions'] = df.apply(f_windows_covering_positions, axis=1)
 
     # filtering
-    df = df[(df['windows_covering_positions']>1)  & (df['windows_pass_posterior'])>1]
+    df = df[(df['windows_covering_positions']>1)  & (df['windows_pass_posterior']>1)]
 
     # write to csv
     df.to_csv(fname_out)
