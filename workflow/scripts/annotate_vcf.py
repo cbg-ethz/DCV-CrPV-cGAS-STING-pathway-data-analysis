@@ -244,7 +244,10 @@ class GenBank(object):
 
     @index.setter
     def index(self, value):
-        self._index = self.__position_index[value - 1]
+        try:
+            self._index = self.__position_index[value - 1]
+        except:
+            self._index = None
         self.__set_feature()
 
     def parse_genbank(self):
