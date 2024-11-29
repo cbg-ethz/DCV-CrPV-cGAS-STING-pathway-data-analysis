@@ -115,7 +115,7 @@ rule annotate_vcf:
     output:
         fname_snvs_vcf="{dataset}/snvs.annotated.vcf",
     params:
-        chrom_name="NC_001834.1",
+        chrom_name="AF014388.1", #"NC_001834.1",
     conda:
         "envs/annotate_vcf.yaml"
     script:
