@@ -1,6 +1,6 @@
 viloca:
   parental_dcv: resources/references/ref_majority_dcv.fasta
-  parental_crpv: resources/references/crpv.consensus.bcftools.fasta
+  parental_crpv: resources/references/pCrPV_3_parentalstock.fasta
 
 vpipe_dcv:
   general:
@@ -74,7 +74,7 @@ vpipe_crpv:
       aligner: "bwa"
 
   input:
-      reference: resources/references/crpv.consensus.bcftools.fasta
+      reference: resources/references/pCrPV_3_parentalstock.fasta
       datadir: resources/samples/crpv_base
       read_length: 42
       samples_file: config/samples_crpv.tsv
