@@ -50,5 +50,5 @@ if __name__ == "__main__":
     main(
         snakemake.input.fname_crpv,
         snakemake.input.fname_dcv,
-        snakemake.putput.fname_out,
+        snakemake.output.fname_out,
     )
