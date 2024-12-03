@@ -7,9 +7,10 @@ def f_windows_covering_positions(row):
     return len([0 for x in [row['Freq1'], row['Freq2'], row['Freq3']] if not math.isnan(x)])
 
 def f_windows_pass_posterior(row):
-    return len([0 for x in [row['Post1'], row['Post2'], row['Post3']] if x>=0.8])
+    posterior_threshold = 0.8
+    return len([0 for x in [row['Post1'], row['Post2'], row['Post3']] if x>=posterior_threshold])
 
-def main(fname_crpv, fname_dcv, fname_out, posterior_threshold):
+def main(fname_crpv, fname_dcv, fname_out):
 
     # load dataframes
     df = pd.concat([pd.read_csv(fname_crpv), pd.read_csv(fname_dcv)])
