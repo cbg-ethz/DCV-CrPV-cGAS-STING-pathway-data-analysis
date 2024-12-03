@@ -18,6 +18,7 @@ def main(fname_crpv, fname_dcv, fname_out):
     #INFO field to dataframe
     info_strings = '{"' + df.INFO.str.split(';').str.join('","').str.replace('=','":"').str.replace("\"\",", "") + '"}'
     info_df = pd.json_normalize(info_strings.apply(eval))
+    info_df = info_df.reset_index(drop=True) # Reset the index of info_df before concatenating
     df = pd.concat([df, info_df], axis=1)
 
     # fiilter columns
