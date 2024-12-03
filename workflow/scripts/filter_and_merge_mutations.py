@@ -13,13 +13,12 @@ def f_windows_pass_posterior(row):
 def main(fname_crpv, fname_dcv, fname_out):
 
     # load dataframes
-    df = pd.concat([pd.read_csv(fname_crpv), pd.read_csv(fname_dcv)])
+    df = pd.concat([pd.read_csv(fname_crpv), pd.read_csv(fname_dcv)]).reset_index()
 
     #INFO field to dataframe
     info_strings = '{"' + df.INFO.str.split(';').str.join('","').str.replace('=','":"').str.replace("\"\",", "") + '"}'
     info_df = pd.json_normalize(info_strings.apply(eval))
-    info_df = info_df.reset_index(drop=True) # Reset the index of info_df before concatenating
-    df = pd.concat([df, info_df], axis=1)
+    df = pd.concat([df, info_df.reset_index(drop=True)], axis=1)
 
     # fiilter columns
     cols_of_interest = ['CHROM', 'POS', 'REF', 'ALT', 'QUAL', 'virus', 'file', 'Fvar', 'Rvar', 'Ftot', 'Rtot',
