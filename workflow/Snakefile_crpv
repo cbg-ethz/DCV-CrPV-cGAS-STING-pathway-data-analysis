@@ -30,7 +30,7 @@ rule all:
         "results/crpv_all_mutations.csv",
         "results/crpv_all_mutations_lofreq.csv",
         "results/crpv_all_mutations.annotated.csv",
-        "results/snpgenie_codon_results.csv",
+        "results/crpv_snpgenie_codon_results.csv",
     default_target: True
 
 datasets = vpipe_crpv.datasets + ['results/crpv/parental_p0']
