@@ -30,13 +30,7 @@ rule all:
         "results/crpv_all_mutations.csv",
         "results/crpv_all_mutations_lofreq.csv",
         "results/crpv_all_mutations.annotated.csv",
-        #f"results/all_mutations.annotated.csv",
-        #f"results/crpv_all_consensus.fasta",
-        #f"results/dcv_all_consensus.fasta",
-        #f"results/snpgenie_codon_results.csv",
-        #f"results/snpgenie_population_summary.csv",
-        #f"results/snpgenie_product_results.csv",
-        #f"results/snpgenie_site_results.csv",
+        "results/snpgenie_codon_results.csv",
     default_target: True
 
 datasets = vpipe_crpv.datasets + ['results/crpv/parental_p0']
@@ -148,7 +142,7 @@ rule collect_coverage:
 
 rule run_snpgenie:
     input:
-        fname_snvs_vcf="{dataset}/variants/SNVs/snvs.vcf",
+        fname_snvs_vcf="{dataset}/variants/SNVs/snvs/SNVs_0.010000_final.vcf",
         fname_reference=config['vpipe_crpv']['input']['reference'],
         fname_gtffile="resources/references/GCF_000853145.1_ViralProj14832_genomic_crpv.gtf",
     output:

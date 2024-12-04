@@ -30,6 +30,7 @@ rule all:
         "results/dcv_all_mutations.csv",
         "results/dcv_all_mutations_lofreq.csv",
         "results/dcv_all_mutations.annotated.csv",
+        "results/dcv_snpgenie_codon_results.csv"
     default_target: True
 
 datasets = vpipe_dcv.datasets + ['results/dcv/parental_p0']
@@ -162,7 +163,7 @@ rule collect_coverage:
 
 rule run_snpgenie:
     input:
-        fname_snvs_vcf="{dataset}/variants/SNVs/snvs.vcf",
+        fname_snvs_vcf="{dataset}/variants/SNVs/snvs/SNVs_0.010000_final.vcf",
         fname_reference=config['vpipe_dcv']['input']['reference'],
         fname_gtffile="resources/references/dcv_CDS_annotations.gtf",
     output:
