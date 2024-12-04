@@ -158,10 +158,10 @@ rule run_snpgenie:
 
 rule collect_snpgenie:
     input:
-        fname_codon=expand("{dataset}/variants/SNPGenie_Results_work/codon_results.txt", dataset=vpipe_crpv.datasets),
-        fname_population_summary=expand("{dataset}/variants/SNPGenie_Results_work/population_summary.txt", dataset=vpipe_crpv.datasets),
-        fname_product_results=expand("{dataset}/variants/SNPGenie_Results_work/product_results.txt", dataset=vpipe_crpv.datasets),
-        fname_site_results=expand("{dataset}/variants/SNPGenie_Results_work/site_results.txt", dataset=vpipe_crpv.datasets),
+        fname_codon=expand("{dataset}/variants/SNPGenie_Results_work/codon_results.txt", dataset=datasets),
+        fname_population_summary=expand("{dataset}/variants/SNPGenie_Results_work/population_summary.txt", dataset=datasets),
+        fname_product_results=expand("{dataset}/variants/SNPGenie_Results_work/product_results.txt", dataset=datasets),
+        fname_site_results=expand("{dataset}/variants/SNPGenie_Results_work/site_results.txt", dataset=datasets),
     output:
         fname_codon=f"results/crpv_snpgenie_codon_results.csv",
         fname_population_summary=f"results/crpv_snpgenie_population_summary.csv",
