@@ -163,7 +163,7 @@ rule collect_coverage:
 
 rule run_snpgenie:
     input:
-        fname_snvs_vcf="{dataset}/variants/SNVs/snvs/SNVs_0.010000_final.vcf",
+        fname_snvs_vcf="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.vcf",
         fname_reference=config['vpipe_dcv']['input']['reference'],
         fname_gtffile="resources/references/dcv_CDS_annotations.gtf",
     output:
