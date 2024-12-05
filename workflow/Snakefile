@@ -19,3 +19,14 @@ rule filter_and_merge_mutations:
         "envs/annotate_vcf.yaml"
     script:
         "scripts/filter_and_merge_mutations.py"
+
+rule coverage_summary:
+    input:
+        fname_dcv="results/dcv_coverage.csv",
+        fname_crpv="results/crpv_coverage.csv",
+    output:
+        fname_out="results/coverage.csv",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "scripts/coverage_summary.py"
