@@ -6,6 +6,7 @@ and filter them.
 rule all:
     input:
         "results/all_mutations.annotated.filtered.csv",
+        "results/coverage.csv",
     default_target: True
 
 
