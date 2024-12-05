@@ -160,10 +160,20 @@ rule collect_coverage:
     script:
         "./scripts/collect_coverage.py"
 
+rule prep_snpgenie:
+    input:
+        fname_snvs_vcf="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.vcf",
+    output:
+        fname_snvs_vcf="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.snpgenie.vcf",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "./scripts/snpgenie_prep.py"
+
 
 rule run_snpgenie:
     input:
-        fname_snvs_vcf="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.vcf",
+        fname_snvs_vcf="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.snpgenie.vcf",
         fname_reference=config['vpipe_dcv']['input']['reference'],
         fname_gtffile="resources/references/dcv_CDS_annotations.gtf",
     output:
