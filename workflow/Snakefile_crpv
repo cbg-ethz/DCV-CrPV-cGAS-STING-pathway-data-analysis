@@ -180,6 +180,6 @@ rule collect_snpgenie:
         fname_product_results=f"results/crpv_snpgenie_product_results.csv",
         fname_site_results=f"results/crpv_snpgenie_site_results.csv",
     conda:
-        "envs/snpgenie.yaml"
+        "envs/annotate_vcf.yaml"
     script:
         "./scripts/collect_snpgenie_results.py"
