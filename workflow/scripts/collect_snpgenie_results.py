@@ -11,9 +11,10 @@ def concat_files(in_files_list, out_fname):
 
     for file in in_files_list:
         df = pd.read_csv(file, sep='\t')
-        df["genotype"] = file.split("/variants")[0].split("/")[-4]
-        df["replicate"] = file.split("/variants")[0].split("/")[-2]
+        df['virus'] = file.split("/variants")[0].split("/")[-3]
+        df["rep"] = file.split("/variants")[0].split("/")[-2]
         df["passage"] = file.split("/variants")[0].split("/")[-1]
+        df['file'] = file
 
         tmp.append(df)
 
