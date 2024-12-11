@@ -16,11 +16,11 @@ def f_add_DP_and_AF(record_INFO):
     return record_INFO
 
 def f_windows_covering_positions(record_INFO):
-    return len([key for key in record.INFO.keys() if key.startswith("Freq")])
+    return len([key for key in record_INFO.keys() if key.startswith("Freq")])
 
 def f_windows_pass_posterior(record_INFO):
     posterior_threshold = 0.8
-    post_keys = [key for key in record.INFO.keys() if key.startswith("Post")]
+    post_keys = [key for key in record_INFO.keys() if key.startswith("Post")]
     post_values = [record_INFO[key][0] for key in post_keys]
 
     return len([0 for x in post_values if float(x)>=posterior_threshold])
