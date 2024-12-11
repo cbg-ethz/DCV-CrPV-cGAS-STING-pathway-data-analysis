@@ -7,6 +7,10 @@ rule all:
     input:
         "results/all_mutations.annotated.filtered.csv",
         "results/coverage.csv",
+        "results/all_snpgenie_codon_results.csv",
+        "results/all_snpgenie_population_summary.csv",
+        "results/all_snpgenie_product_results.csv",
+        "results/all_snpgenie_site_results.csv",
     default_target: True
 
 
