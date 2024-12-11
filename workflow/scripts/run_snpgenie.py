@@ -16,7 +16,7 @@ def run_snpgenie(fname_reference, in_vcf, gtffile_CDS_annotations, dname_work):
             "--snpreport=" + str(in_vcf),
             "--fastafile=" + str(fname_reference),
             "--gtffile=" + str(gtffile_CDS_annotations),
-            "--minfreq=0.0001",
+            "--minfreq=0.0000",
             "--outdir="+str(dname_work)
         ],
         check=True,
