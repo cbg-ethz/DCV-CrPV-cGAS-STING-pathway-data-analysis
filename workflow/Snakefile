@@ -10,6 +10,50 @@ rule all:
     default_target: True
 
 
+rule collect_snpgenie_codon:
+    input:
+        fname_codon_crpv=f"results/crpv_snpgenie_codon_results.csv",
+        fname_population_summary_crpv=f"results/crpv_snpgenie_population_summary.csv",
+        fname_product_results_crpv=f"results/crpv_snpgenie_product_results.csv",
+        fname_site_results_crpv=f"results/crpv_snpgenie_site_results.csv",
+        fname_codon_dcv=f"results/dcv_snpgenie_codon_results.csv",
+        fname_population_summary_dcv=f"results/dcv_snpgenie_population_summary.csv",
+        fname_product_results_dcv=f"results/dcv_snpgenie_product_results.csv",
+        fname_site_results_dcv=f"results/dcv_snpgenie_site_results.csv",
+    output:
+        fname_codon=f"results/all_snpgenie_codon_results.csv",
+        fname_population_summary=f"results/all_snpgenie_population_summary.csv",
+        fname_product_results=f"results/all_snpgenie_product_results.csv",
+        fname_site_results=f"results/all_snpgenie_site_results.csv",
+    run:
+        import pandas as pd
+
+        df_dcv = pd.read_csv(input.fname_codon_dcv)
+        df_dcv['virus'] = 'DCV'
+        df_crpv = pd.read_csv(input.fname_codon_crpv)
+        df_crpv['virus'] = 'CrPV'
+        pd.concat([df_dcv, df_crpv]).to_csv(output.fname_codon)
+
+        df_dcv = pd.read_csv(input.fname_population_summary_dcv)
+        df_dcv['virus'] = 'DCV'
+        df_crpv = pd.read_csv(input.fname_population_summary_crpv)
+        df_crpv['virus'] = 'CrPV'
+        pd.concat([df_dcv, df_crpv]).to_csv(output.fname_population_summary)
+
+        df_dcv = pd.read_csv(input.fname_product_results_dcv)
+        df_dcv['virus'] = 'DCV'
+        df_crpv = pd.read_csv(input.fname_product_results_crpv)
+        df_crpv['virus'] = 'CrPV'
+        pd.concat([df_dcv, df_crpv]).to_csv(output.fname_product_results)
+
+        df_dcv = pd.read_csv(input.fname_site_results_dcv)
+        df_dcv['virus'] = 'DCV'
+        df_crpv = pd.read_csv(input.fname_site_results_crpv)
+        df_crpv['virus'] = 'CrPV'
+        pd.concat([df_dcv, df_crpv]).to_csv(output.fname_site_results)
+
+
+
 rule filter_and_merge_mutations:
     input:
         fname_dcv="results/crpv_all_mutations.annotated.csv",
