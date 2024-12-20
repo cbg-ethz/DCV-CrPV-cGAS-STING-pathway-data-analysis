@@ -69,6 +69,14 @@ rule filter_and_merge_mutations:
     script:
         "scripts/filter_and_merge_mutations.py"
 
+use filter_and_merge_mutations as filter_and_merge_mutations_non_annotated with:
+    input:
+        fname_dcv="results/crpv_all_mutations.csv",
+        fname_crpv="results/dcv_all_mutations.csv",
+    output:
+        fname_out="results/all_mutations.filtered.csv",
+
+
 rule coverage_summary:
     input:
         fname_dcv="results/dcv_coverage.csv",

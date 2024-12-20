@@ -21,11 +21,11 @@ def main(fname_crpv, fname_dcv, fname_out):
     df = pd.concat([df, info_df.reset_index(drop=True)], axis=1)
 
     # fiilter columns
-    cols_of_interest = ['CHROM', 'POS', 'REF', 'ALT', 'QUAL', 'virus', 'file', 'Fvar', 'Rvar', 'Ftot', 'Rtot',
-                        'RefCodon', 'AltCodon', 'RefAminoAcid', 'AltAminoAcid', 'CodonPosition', 'SNPCodonPosition',
-                        'AminoAcidChange', 'IsSynonymous',  'Product', 'ProteinID', 'VariantType', 'FeatureType',
-                        'Freq1', 'Post1', 'Freq2', 'Post2', 'Freq3', 'Post3']
-    df = df[cols_of_interest]
+    #cols_of_interest = ['CHROM', 'POS', 'REF', 'ALT', 'QUAL', 'virus', 'file', 'Fvar', 'Rvar', 'Ftot', 'Rtot',
+    #                    'RefCodon', 'AltCodon', 'RefAminoAcid', 'AltAminoAcid', 'CodonPosition', 'SNPCodonPosition',
+    #                    'AminoAcidChange', 'IsSynonymous',  'Product', 'ProteinID', 'VariantType', 'FeatureType',
+    #                    'Freq1', 'Post1', 'Freq2', 'Post2', 'Freq3', 'Post3']
+    #df = df[cols_of_interest]
 
     # convert columns to float
     columns_to_float = ['Freq1', 'Post1','Freq2', 'Post2', 'Freq3', 'Post3', 'Fvar', 'Rvar', 'Ftot', 'Rtot']
