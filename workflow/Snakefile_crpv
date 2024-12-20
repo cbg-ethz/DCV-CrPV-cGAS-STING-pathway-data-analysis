@@ -33,7 +33,7 @@ rule all:
         "results/crpv.cooccurring_mutations.csv",
     default_target: True
 
-datasets = vpipe_crpv.datasets + ['results/crpv/parental_p0']
+datasets = vpipe_crpv.datasets #+ ['results/crpv/parental_p0']
 
 
 rule collect_consensus_sequences:
