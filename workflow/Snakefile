@@ -11,6 +11,7 @@ rule all:
         "results/all_snpgenie_population_summary.csv",
         "results/all_snpgenie_product_results.csv",
         "results/all_snpgenie_site_results.csv",
+        "results/all_mutations.filtered.csv",
     default_target: True
 
 
@@ -69,7 +70,7 @@ rule filter_and_merge_mutations:
     script:
         "scripts/filter_and_merge_mutations.py"
 
-use filter_and_merge_mutations as filter_and_merge_mutations_non_annotated with:
+use rule filter_and_merge_mutations as filter_and_merge_mutations_non_annotated with:
     input:
         fname_dcv="results/crpv_all_mutations.csv",
         fname_crpv="results/dcv_all_mutations.csv",
