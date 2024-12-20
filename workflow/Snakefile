@@ -61,22 +61,27 @@ rule collect_snpgenie_codon:
 
 rule filter_and_merge_mutations:
     input:
-        fname_dcv="results/crpv_all_mutations.annotated.csv",
-        fname_crpv="results/dcv_all_mutations.annotated.csv",
+        fnames_csv=["results/crpv_all_mutations.annotated.no_parental.csv",
+                    "results/dcv_all_mutations.annotated.csv",
+                    "results/crpv_all_mutations.annotated.parental.csv",]
+    output:
+        fname_out="results/all_mutations.annotated.filtered.csv",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "scripts/filter_and_merge_mutations.annotated.py"
+
+rule filter_and_merge_mutations:
+    input:
+        fnames_csv=["results/crpv_all_mutations.annotated.no_parental.csv",
+                    "results/dcv_all_mutations.annotated.csv",
+                    "results/crpv_all_mutations.annotated.parental.csv",]
     output:
         fname_out="results/all_mutations.annotated.filtered.csv",
     conda:
         "envs/annotate_vcf.yaml"
     script:
         "scripts/filter_and_merge_mutations.py"
-
-use rule filter_and_merge_mutations as filter_and_merge_mutations_non_annotated with:
-    input:
-        fname_dcv="results/crpv_all_mutations.csv",
-        fname_crpv="results/dcv_all_mutations.csv",
-    output:
-        fname_out="results/all_mutations.filtered.csv",
-
 
 rule coverage_summary:
     input:
