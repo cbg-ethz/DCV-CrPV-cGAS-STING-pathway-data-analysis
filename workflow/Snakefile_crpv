@@ -28,9 +28,9 @@ rule all:
         rules.vpipe_crpv_all.input,
         "results/crpv_coverage.csv",
         "results/crpv_all_mutations.csv",
-        "results/crpv_all_mutations_lofreq.csv",
         "results/crpv_all_mutations.annotated.csv",
         "results/crpv_snpgenie_codon_results.csv",
+        "results/crpv.cooccurring_mutations.csv",
     default_target: True
 
 datasets = vpipe_crpv.datasets + ['results/crpv/parental_p0']
@@ -46,29 +46,12 @@ rule collect_consensus_sequences:
     script:
         "./scripts/collect_consensus_sequences.py"
 
-rule run_lofreq:
-    input:
-        fname_bam="{dataset}/alignments/REF_aln.bam",
-        fname_reference_dcv=config['vpipe_dcv']['input']['reference'],
-        fname_reference_crpv=config['vpipe_crpv']['input']['reference'],
-        fname_reference_p0_dcv=config['viloca']['parental_dcv'],
-        fname_reference__p0_crpv=config['viloca']['parental_crpv'],
-    output:
-        fname_snv_vcf="{dataset}/variants_lofreq/snvs.vcf",
-        dname_work=directory(
-            "{dataset}/variants_lofreq/"
-            ),
-    conda:
-        "envs/lofreq.yaml"
-    script:
-        "scripts/lofreq.py"
-
 
 rule run_viloca:
     input:
         fname_bam="{dataset}/alignments/REF_aln.bam",
-        fname_reference_dcv=config['vpipe_dcv_p0']['input']['reference'],
-        fname_reference_crpv=config['vpipe_crpv_p0']['input']['reference'],
+        fname_reference_dcv=config['viloca']['parental_dcv'], #config['vpipe_dcv_p0']['input']['reference'],
+        fname_reference_crpv=config['viloca']['parental_crpv'], #config['vpipe_crpv_p0']['input']['reference'],
         fname_reference_p0_dcv=config['viloca']['parental_dcv'],
         fname_reference__p0_crpv=config['viloca']['parental_crpv'],
     params:
@@ -76,6 +59,7 @@ rule run_viloca:
     output:
         fname_snv_vcf="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.vcf",
         fname_snv_csv="{dataset}/variants/SNVs/snv/SNVs_0.010000_final.csv",
+        fname_csv_cocc="{dataset}/variants/SNVs/snv/cooccurring_mutations.csv",
         dname_work=directory(
             "{dataset}/variants/SNVs/"
             ),
@@ -87,6 +71,16 @@ rule run_viloca:
     threads: 40
     script:
         "scripts/run_viloca.py"
+
+rule viloca_global_cooccurring_mutations:
+    input:
+        fname_csv="{dataset}/variants/SNVs/snv/cooccurring_mutations.csv",
+    output:
+        fname_csv="{dataset}/variants/SNVs/snv/cooccurring_mutations.corrected.csv",
+    conda:
+        "envs/annotate_vcf.yaml"
+    script:
+        "./scripts/viloca_global_cooccurring_mutations.py"
 
 rule annotate_vcf:
     input:
@@ -121,11 +115,11 @@ rule collect_all_mutations:
     script:
         "./scripts/collect_mutations.py"
 
-use rule collect_all_mutations as lofreq_collect_all_mutations with:
+use rule collect_all_mutations as collect_all_mutations_cocc with:
     input:
-        fnames_snv_csv=expand("{dataset}/variants_lofreq/snvs.vcf", dataset=datasets),
+        fnames_snv_csv=expand("{dataset}/variants/SNVs/snv/cooccurring_mutations.corrected.csv", dataset=datasets),
     output:
-        fname_all_mutations="results/crpv_all_mutations_lofreq.csv",
+        fname_all_mutations="results/crpv.cooccurring_mutations.csv",
 
 
 
