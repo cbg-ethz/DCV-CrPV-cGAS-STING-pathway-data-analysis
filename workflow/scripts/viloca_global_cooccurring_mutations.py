@@ -161,8 +161,8 @@ def main(fname, fname_coocc_csv_out):
             if file.endswith(".fas"):
                 fname_haplo=base_dir+"support/"+file.split("/")[-1]
                 fname_ref=base_dir+"raw_reads/"+file.split("/")[-1].split("reads-support")[0]+"ref.fas"
-                beg=file.split("/")[-1].split("-")[3]
-                end=file.split("/")[-1].split("-")[4]
+                beg=file.split("/")[-1].split("-")[2].split("")
+                end=file.split("/")[-1].split("-")[3].split(".reads")[0]
                 chrom="rep_a-p0" #file.split("/")[-1].split("-")[1]
                 tmp_df.append(get_cooccuring_muts_df(fname_haplo, fname_ref, beg,end,chrom))
 
