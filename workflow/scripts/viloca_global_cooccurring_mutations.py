@@ -163,7 +163,7 @@ def main(fname, fname_coocc_csv_out):
                 fname_ref=base_dir+"raw_reads/"+file.split("/")[-1].split("reads-support")[0]+"ref.fas"
                 beg=file.split("/")[-1].split("-")[2]
                 end=file.split("/")[-1].split("-")[3].split(".reads")[0]
-                chrom="rep_a-p0" #file.split("/")[-1].split("-")[1]
+                chrom="pCrPV" #file.split("/")[-1].split("-")[1]
                 tmp_df.append(get_cooccuring_muts_df(fname_haplo, fname_ref, beg,end,chrom))
 
     pd.concat(tmp_df).to_csv(fname_coocc_csv_out)
