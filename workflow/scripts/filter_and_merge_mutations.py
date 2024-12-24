@@ -4,16 +4,20 @@ import pandas as pd
 import math
 
 def f_windows_covering_positions(row):
-    return len([0 for x in [row['Freq1'], row['Freq2'], row['Freq3']] if not math.isnan(x)])
+    return len([0 for x in [row['Frq1'], row['Frq2'], row['Frq3']] if not math.isnan(x)])
 
 def f_windows_pass_posterior(row):
     posterior_threshold = 0.8
-    return len([0 for x in [row['Post1'], row['Post2'], row['Post3']] if x>=posterior_threshold])
+    return len([0 for x in [row['Pst1'], row['Pst2'], row['Pst3']] if x>=posterior_threshold])
 
 def main(fnames_csv, fname_out):
 
     # load dataframes
     df = pd.concat([pd.read_csv(fname) for fname in fnames_csv]).reset_index()
+
+    # convert columns to float
+    columns_to_float = ['Frq1', 'Pst1','Frq2', 'Pst2', 'Frq3', 'Pst3', 'Fvar', 'Rvar', 'Ftot', 'Rtot']
+    df[columns_to_float] = df[columns_to_float].astype(float)
 
     df['coverage'] = df['Ftot'] + df['Rtot']
     df['n_var'] = df['Rvar'] + df['Fvar']
