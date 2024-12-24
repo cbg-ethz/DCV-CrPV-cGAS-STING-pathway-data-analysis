@@ -5,19 +5,18 @@ and filter them.
 
 rule all:
     input:
-        #"results/all_mutations.annotated.filtered.csv",
-        #"results/coverage.csv",
-        #"results/all_snpgenie_codon_results.csv",
-        #"results/all_snpgenie_population_summary.csv",
-        #"results/all_snpgenie_product_results.csv",
-        #"results/all_snpgenie_site_results.csv",
-        #"results_summary/all_mutations.filtered.new.csv",
-        "results_summary/all_mutations.filtered.old.csv",
+        "results_summary/all_mutations.annotated.filtered.csv",
+        "results_summary/all_mutations.filtered.csv",
+        "results_summary/coverage.csv",
+        "results_summary/all_snpgenie_codon_results.csv",
+        "results_summary/all_snpgenie_population_summary.csv",
+        "results_summary/all_snpgenie_product_results.csv",
+        "results_summary/all_snpgenie_site_results.csv",
     default_target: True
 
 rule filter_and_merge_mutations:
     input:
-        fnames_csv=["results/crpv_all_mutations.no_parental.csv"]
+        fnames_csv=["results/crpv_all_mutations.no_parental.csv", ]
     output:
         fname_out="results_summary/all_mutations.filtered.old.csv",
     conda:
@@ -25,7 +24,6 @@ rule filter_and_merge_mutations:
     script:
         "scripts/filter_and_merge_mutations.py"
 
-"""
 rule collect_snpgenie_codon:
     input:
         fname_codon_crpv=f"results/crpv_snpgenie_codon_results.csv",
@@ -37,10 +35,10 @@ rule collect_snpgenie_codon:
         fname_product_results_dcv=f"results/dcv_snpgenie_product_results.csv",
         fname_site_results_dcv=f"results/dcv_snpgenie_site_results.csv",
     output:
-        fname_codon=f"results/all_snpgenie_codon_results.csv",
-        fname_population_summary=f"results/all_snpgenie_population_summary.csv",
-        fname_product_results=f"results/all_snpgenie_product_results.csv",
-        fname_site_results=f"results/all_snpgenie_site_results.csv",
+        fname_codon=f"results_summary/all_snpgenie_codon_results.csv",
+        fname_population_summary=f"results_summary/all_snpgenie_population_summary.csv",
+        fname_product_results=f"results_summary/all_snpgenie_product_results.csv",
+        fname_site_results=f"results_summary/all_snpgenie_site_results.csv",
     run:
         import pandas as pd
 
@@ -70,13 +68,13 @@ rule collect_snpgenie_codon:
 
 
 
-rule filter_and_merge_mutations:
+rule filter_and_merge_mutations_annotated:
     input:
-        fnames_csv=["results/crpv_all_mutations.annotated.no_parental.csv",
-                    "results/dcv_all_mutations.annotated.csv",
-                    "results/crpv_all_mutations.annotated.parental.csv",]
+        fname_crpv="results/crpv_all_mutations.annotated.no_parental.csv",
+        fname_dcv="results/dcv_all_mutations.annotated.csv", # includes correct parental (wrt to parental consensus)
+        fname_crpv_p0="results/crpv_all_mutations.annotated.csv",]
     output:
-        fname_out="results/all_mutations.annotated.filtered.csv",
+        fname_out="results_summary/all_mutations.annotated.filtered.csv",
     conda:
         "envs/annotate_vcf.yaml"
     script:
@@ -84,11 +82,11 @@ rule filter_and_merge_mutations:
 
 rule filter_and_merge_mutations:
     input:
-        fnames_csv=["results/crpv_all_mutations.annotated.no_parental.csv",
-                    "results/dcv_all_mutations.annotated.csv",
-                    "results/crpv_all_mutations.annotated.parental.csv",]
+        fname_crpv="results/crpv_all_mutations.no_parental.csv",
+        fname_dcv="results/dcv_all_mutations.csv", # includes correct parental (wrt to parental consensus)
+        fname_crpv_p0="results/crpv_all_mutations.csv",]
     output:
-        fname_out="results/all_mutations.annotated.filtered.csv",
+        fname_out="results_summary/all_mutations.filtered.csv",
     conda:
         "envs/annotate_vcf.yaml"
     script:
@@ -99,9 +97,8 @@ rule coverage_summary:
         fname_dcv="results/dcv_coverage.csv",
         fname_crpv="results/crpv_coverage.csv",
     output:
-        fname_out="results/coverage.csv",
+        fname_out="results_summary/coverage.csv",
     conda:
         "envs/annotate_vcf.yaml"
     script:
         "scripts/coverage_summary.py"
-"""

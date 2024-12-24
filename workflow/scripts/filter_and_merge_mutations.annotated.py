@@ -10,10 +10,18 @@ def f_windows_pass_posterior(row):
     posterior_threshold = 0.8
     return len([0 for x in [row['Post1'], row['Post2'], row['Post3']] if x>=posterior_threshold])
 
-def main(fnames_csv, fname_out):
+def main(fname_crpv, fname_dcv, fname_crpv_p0, fname_out):
 
     # load dataframes
-    df = pd.concat([pd.read_csv(fname) for fname in fnames_csv]).reset_index()
+    df_crpv = pd.read_csv(fname_crpv)
+    df_crpv = df_crpv[~df_crpv["file"].str.contains("parental")] # no parental
+
+    df_dcv = pd.read_csv(fname_dcv)
+
+    df_crpv_p0 = pd.read_csv(fname_crpv_p0)
+    df_crpv_p0 = df_crpv_p0[df_crpv_p0["file"].str.contains("parental")] # only parental
+
+    df = pd.concat([df_crpv_p0,df_dcv,df_crpv] ).reset_index()
 
     #INFO field to dataframe
     info_strings = '{"' + df.INFO.str.split(';').str.join('","').str.replace('=','":"').str.replace("\"\",", "") + '"}'
@@ -49,6 +57,8 @@ def main(fnames_csv, fname_out):
 
 if __name__ == "__main__":
     main(
-        snakemake.input.fnames_csv,
+        snakemake.input.fname_crpv,
+        snakemake.input.fname_dcv,
+        snakemake.input.fname_crpv_p0,
         snakemake.output.fname_out,
     )
