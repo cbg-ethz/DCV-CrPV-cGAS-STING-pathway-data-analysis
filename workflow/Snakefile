@@ -11,7 +11,7 @@ rule all:
         #"results/all_snpgenie_population_summary.csv",
         #"results/all_snpgenie_product_results.csv",
         #"results/all_snpgenie_site_results.csv",
-        "results/all_mutations.filtered.new.csv",
+        "results_summary/all_mutations.filtered.new.csv",
         #"results/all_mutations.filtered.old.csv",
     default_target: True
 
@@ -19,7 +19,7 @@ rule filter_and_merge_mutations:
     input:
         fnames_csv=["results/crpv_all_mutations.csv"]
     output:
-        fname_out="results/all_mutations.filtered.new.csv",
+        fname_out="results_summary/all_mutations.filtered.new.csv",
     conda:
         "envs/annotate_vcf.yaml"
     script:
