@@ -15,16 +15,6 @@ def main(fnames_csv, fname_out):
     # load dataframes
     df = pd.concat([pd.read_csv(fname) for fname in fnames_csv]).reset_index()
 
-    print(df.columns)
-    #INFO field to dataframe
-    info_strings = '{"' + df.INFO.str.split(';').str.join('","').str.replace('=','":"').str.replace("\"\",", "") + '"}'
-    info_df = pd.json_normalize(info_strings.apply(eval))
-    df = pd.concat([df, info_df.reset_index(drop=True)], axis=1)
-
-    # convert columns to float
-    columns_to_float = ['Freq1', 'Post1','Freq2', 'Post2', 'Freq3', 'Post3', 'Fvar', 'Rvar', 'Ftot', 'Rtot']
-    df[columns_to_float] = df[columns_to_float].astype(float)
-
     df['coverage'] = df['Ftot'] + df['Rtot']
     df['n_var'] = df['Rvar'] + df['Fvar']
     df['freq'] = df['n_var'] / df['coverage']
