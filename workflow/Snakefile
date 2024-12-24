@@ -72,7 +72,7 @@ rule filter_and_merge_mutations_annotated:
     input:
         fname_crpv="results/crpv_all_mutations.annotated.no_parental.csv",
         fname_dcv="results/dcv_all_mutations.annotated.csv", # includes correct parental (wrt to parental consensus)
-        fname_crpv_p0="results/crpv_all_mutations.annotated.csv",]
+        fname_crpv_p0="results/crpv_all_mutations.annotated.csv",
     output:
         fname_out="results_summary/all_mutations.annotated.filtered.csv",
     conda:
@@ -84,7 +84,7 @@ rule filter_and_merge_mutations:
     input:
         fname_crpv="results/crpv_all_mutations.no_parental.csv",
         fname_dcv="results/dcv_all_mutations.csv", # includes correct parental (wrt to parental consensus)
-        fname_crpv_p0="results/crpv_all_mutations.csv",]
+        fname_crpv_p0="results/crpv_all_mutations.csv",
     output:
         fname_out="results_summary/all_mutations.filtered.csv",
     conda:
