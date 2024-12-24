@@ -17,7 +17,8 @@ def main(fnames_csv, fname_out):
 
     # convert columns to float
     columns_to_float = ['Frq1', 'Pst1','Frq2', 'Pst2', 'Frq3', 'Pst3', 'Fvar', 'Rvar', 'Ftot', 'Rtot']
-    df[columns_to_float] = df[columns_to_float].astype(float)
+    for col in columns_to_float:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
 
     df['coverage'] = df['Ftot'] + df['Rtot']
     df['n_var'] = df['Rvar'] + df['Fvar']
