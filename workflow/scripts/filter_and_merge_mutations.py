@@ -15,6 +15,7 @@ def main(fnames_csv, fname_out):
     # load dataframes
     df = pd.concat([pd.read_csv(fname) for fname in fnames_csv]).reset_index()
 
+    print(df.columns)
     #INFO field to dataframe
     info_strings = '{"' + df.INFO.str.split(';').str.join('","').str.replace('=','":"').str.replace("\"\",", "") + '"}'
     info_df = pd.json_normalize(info_strings.apply(eval))
