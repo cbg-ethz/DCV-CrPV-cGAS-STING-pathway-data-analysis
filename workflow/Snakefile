@@ -14,15 +14,6 @@ rule all:
         "results_summary/all_snpgenie_site_results.csv",
     default_target: True
 
-rule filter_and_merge_mutations:
-    input:
-        fnames_csv=["results/crpv_all_mutations.no_parental.csv", ]
-    output:
-        fname_out="results_summary/all_mutations.filtered.old.csv",
-    conda:
-        "envs/annotate_vcf.yaml"
-    script:
-        "scripts/filter_and_merge_mutations.py"
 
 rule collect_snpgenie_codon:
     input:
