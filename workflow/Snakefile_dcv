@@ -55,7 +55,7 @@ rule homopolymeric_region_rdrp:
         mem_mb=30024,
         time_min=840,
     conda:
-        "envs/deletion_analysis.yaml"
+        "envs/annotate_vcf.yaml"
     script:
         "./scripts/homopolymeric_region_rdrp.py"
 
