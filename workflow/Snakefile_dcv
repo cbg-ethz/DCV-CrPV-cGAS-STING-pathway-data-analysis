@@ -61,7 +61,7 @@ rule homopolymeric_region_rdrp:
 
 rule homopolymeric_region_rdrp_collect:
     input:
-        fnames_rdrp=expand("{dataset}/alignments/homopolymeric_region_rdrp.csv", dataset=vpipe.datasets),
+        fnames_rdrp=expand("{dataset}/alignments/homopolymeric_region_rdrp.csv", dataset=vpipe_dcv.datasets),
     output:
         fname="results/dcv_homopolymeric_region_rdrp.csv",
     conda:
