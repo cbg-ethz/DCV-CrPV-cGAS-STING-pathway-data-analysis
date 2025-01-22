@@ -64,8 +64,6 @@ rule homopolymeric_region_rdrp_collect:
         fnames_rdrp=expand("{dataset}/alignments/homopolymeric_region_rdrp.csv", dataset=vpipe_dcv.datasets),
     output:
         fname="results/dcv_homopolymeric_region_rdrp.csv",
-    conda:
-        "envs/deletion_analysis.yaml"
     run:
         import pandas as pd
         merged_div_csv = pd.concat( [pd.read_csv(path_div) for path_div in in_fnames])
