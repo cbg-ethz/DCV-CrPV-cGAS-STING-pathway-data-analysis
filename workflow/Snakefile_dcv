@@ -30,7 +30,8 @@ rule all:
         "results/dcv_all_mutations.csv",
         "results/dcv_all_mutations_lofreq.csv",
         "results/dcv_all_mutations.annotated.csv",
-        "results/dcv_snpgenie_codon_results.csv"
+        "results/dcv_snpgenie_codon_results.csv",
+        "results/dcv_homopolymeric_region_rdrp.csv",
     default_target: True
 
 datasets = vpipe_dcv.datasets + ['results/dcv/parental_p0']
@@ -44,6 +45,31 @@ rule collect_consensus_sequences:
         "envs/annotate_vcf.yaml"
     script:
         "./scripts/collect_consensus_sequences.py"
+
+rule homopolymeric_region_rdrp:
+    input:
+        fname_bams="{dataset}/alignments/REF_aln.bam",
+    output:
+        fname_out="{dataset}/alignments/homopolymeric_region_rdrp.csv",
+    resources:
+        mem_mb=30024,
+        time_min=840,
+    conda:
+        "envs/deletion_analysis.yaml"
+    script:
+        "./scripts/homopolymeric_region_rdrp.py"
+
+rule homopolymeric_region_rdrp_collect:
+    input:
+        fnames_rdrp=expand("{dataset}/alignments/homopolymeric_region_rdrp.csv", dataset=vpipe.datasets),
+    output:
+        fname="results/dcv_homopolymeric_region_rdrp.csv",
+    conda:
+        "envs/deletion_analysis.yaml"
+    run:
+        import pandas as pd
+        merged_div_csv = pd.concat( [pd.read_csv(path_div) for path_div in in_fnames])
+        merged_div_csv.to_csv(out_fname)
 
 rule read_length:
     input:

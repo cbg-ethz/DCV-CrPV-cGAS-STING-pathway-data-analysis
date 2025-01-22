@@ -9,3 +9,5 @@ dependencies:
   - pandas==1.5.0
   - pysam==0.19.1
   - pyyaml
+  - pyranges
+  - cigar
