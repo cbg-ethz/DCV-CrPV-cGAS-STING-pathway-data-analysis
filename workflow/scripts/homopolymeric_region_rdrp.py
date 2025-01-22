@@ -76,9 +76,7 @@ def get_df_bam(fname_bam):
     df_bam = df_bam[['Start', 'End', 'Strand', 'Flag', 'QueryStart', 'QueryEnd', 'Name', 'Cigar', 'covers_region', 'del_in_region', 'qual_del_in_region', 'del_region_close_to_read_end']]
 
     # add sample information
-    df_bam["genotype"] = fname_bam.split("/alignment")[0].split("/")[-4]
-    df_bam["replicate"] = fname_bam.split("/alignment")[0].split("/")[-2]
-    df_bam["passage"] = fname_bam.split("/alignment")[0].split("/")[-1]
+    df_bam["file"] = fname_bam
     df_bam["snv_position"] = "5764"
 
     return df_bam
