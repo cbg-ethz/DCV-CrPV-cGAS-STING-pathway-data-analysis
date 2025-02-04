@@ -36,6 +36,34 @@ def postiion_of_deletion(cigar, start_position):
         # ignore I = "insertion", ignore "S"
     return del_list
 
+def postiion_of_insertions(cigar, start_position):
+    c = Cigar(cigar)
+    del_list = []  # list of tuples (start_position, del_length)
+    # iterate through cigar
+    for c_item in list(c.items()):
+        if c_item[1]=="M":
+            start_position+=c_item[0]
+        elif c_item[1]=="D":
+            del_list = del_list + [(start_position, c_item[0])]
+            start_position+=c_item[0]
+        elif c_item[1]=="I":
+            del_list = del_list + [(start_position, c_item[0])]
+            start_position+=0
+        elif c_item[1]=="S":
+            start_position+=0
+        else:
+            print(c_item[1])
+        # ignore I = "insertion", ignore "S"
+    return del_list
+
+def f_insert_in_our_region(row):
+    del_list = postiion_of_insertions(row["Cigar"], row["Start"])
+    if len(del_list)>0:
+        for deletion in del_list:
+            if deletion[0] in list(range(start_region-2, end_region+2)):
+                return True
+    return False
+
 def f_del_in_our_region(row):
     del_list = postiion_of_deletion(row["Cigar"], row["Start"])
     if len(del_list)>0:
@@ -69,6 +97,7 @@ def get_df_bam(fname_bam):
     df_bam['covers_region'] = df_bam.apply(f_filter_region, axis=1)
     df_bam = df_bam[df_bam['covers_region']==True]
 
+    df_bam['insert_in_region'] = df_bam.apply(f_insert_in_our_region, axis=1)
     df_bam['del_in_region'] = df_bam.apply(f_del_in_our_region, axis=1)
     df_bam['qual_del_in_region'] = df_bam.apply(f_qual_del_in_region, axis=1)
     df_bam['del_region_close_to_read_end'] = df_bam.apply(f_del_region_close_to_read_end, axis=1)
