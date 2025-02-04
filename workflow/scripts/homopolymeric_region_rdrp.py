@@ -102,7 +102,7 @@ def get_df_bam(fname_bam):
     df_bam['qual_del_in_region'] = df_bam.apply(f_qual_del_in_region, axis=1)
     df_bam['del_region_close_to_read_end'] = df_bam.apply(f_del_region_close_to_read_end, axis=1)
 
-    df_bam = df_bam[['Start', 'End', 'Strand', 'Flag', 'QueryStart', 'QueryEnd', 'Name', 'Cigar', 'covers_region', 'del_in_region', 'qual_del_in_region', 'del_region_close_to_read_end']]
+    df_bam = df_bam[['Start', 'End', 'Strand', 'Flag', 'QueryStart', 'QueryEnd', 'Name', 'Cigar', 'insert_in_region','covers_region', 'del_in_region', 'qual_del_in_region', 'del_region_close_to_read_end']]
 
     # add sample information
     df_bam["file"] = fname_bam
