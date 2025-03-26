@@ -1,1 +1,1 @@
-# DCV-CrPV-cGAMP-primed-data-analysis
+# DCV-CrPV-cGAS-STING-pathway-data-analysis
